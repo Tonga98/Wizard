@@ -11,14 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::enableForeignKeyConstraints();
+        Schema::create('pasajeros', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('nombre',255);
+            $table->string('apellido', 255);
+            $table->string('ubicacion', 255)->nullable();
+            $table->integer('num_telefono')->nullable()->unique();
             $table->timestamps();
+
+            //Foreing keys
+            $table->foreignId('camioneta_id')->constrained(table: 'camionetas', indexName: 'fk_pasajero_camioneta_id');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';
@@ -31,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('pasajeros');
     }
 };

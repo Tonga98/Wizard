@@ -40,6 +40,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'choferes' => [
+            'driver' => 'session',
+            'provider' => 'choferes',
+        ],
+        'guardas' => [
+            'driver' => 'session',
+            'provider' => 'guardas',
+        ],
     ],
 
     /*
@@ -65,10 +73,15 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+         'choferes' => [
+             'driver' => 'eloquent',
+             'model' => App\Models\Chofer::class,
+         ],
+
+        'guardas' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Guarda::class,
+        ],
     ],
 
     /*
@@ -93,6 +106,20 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'choferes' => [
+            'provider' => 'choferes',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'guardas' => [
+            'provider' => 'guardas',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
