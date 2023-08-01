@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components{
+    .card {
+        padding: 20px;
+        border-radius: 5px;
+        background: #e0e0e0;
+        box-shadow:0px 0px 20px 7px #bebebe, -20px -20px 60px #ffffff;
+        opacity: 80%;
+        width: fit-content;
+        height: fit-content;
+    }
+    li{
+        opacity: 100%;
+        margin-top: 5px
+    }
+}
