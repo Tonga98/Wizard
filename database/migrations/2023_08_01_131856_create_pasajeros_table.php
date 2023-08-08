@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nombre',255);
             $table->string('apellido', 255);
             $table->string('ubicacion', 255)->nullable();
-            $table->integer('num_telefono')->nullable()->unique();
+            $table->bigInteger('num_telefono')->nullable()->unique();
             $table->timestamps();
 
             //Foreing keys

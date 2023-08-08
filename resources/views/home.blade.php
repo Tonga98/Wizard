@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.myApp')
 
 @section('content')
 <div class="h-full flex justify-between align-content-center">
@@ -16,7 +16,7 @@
 
     <!--List of the menu-->
     @if(isset($list))
-        <x-list :list="$list"></x-list>
+        <x-list :list="$list" :title="$title"></x-list>
     @else
         <x-options></x-options>
     @endif

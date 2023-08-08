@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,23 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/{list?}', function () {
+//PAGINA HOME
+Route::get('/', function () {
     return view('home');
-})->name('home');
+})->middleware('login')->name('home');
 
-Route::get('/home/choferes', function () {
-    $choferes = ['Gaston Pojmaevich - Recorrido Centenario', 'Alejandro Dabramo - Recorrido V.L.A', 'Eugenia Caffaratti - Recorrido Neuquen', 'Danilo Pojmaevich - Recorrido Cinco Saltos'];
-    return view('home',['list' => $choferes]);
-})->name('choferes');
-
-Route::get('/guardas', function () {
-    return view('guardas');
-})->name('guardas');
-
-Route::get('/pasajeros', function () {
-    return view('pasajeros');
-})->name('pasajeros');
-
-Route::get('/camionetas', function () {
-    return view('camionetas');
-})->name('camionetas');
+require __DIR__.'/auth.php';

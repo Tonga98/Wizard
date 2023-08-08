@@ -4,10 +4,10 @@
 
     <div class="h-min p-5 max-w-sm md:max-w-none">
         <ul class="font-medium text-base">
-            <li><a href="" class="hover:cursor-pointer hover:underline">Agregar Chofer</a></li>
-            <li><a href="" class="hover:cursor-pointer hover:underline">Agregar Guarda</a></li>
-            <li><a href="" class="hover:cursor-pointer hover:underline">Agregar Pasajero</a></li>
-            <li><a href="" class="hover:cursor-pointer hover:underline">Agregar Camioneta</a></li>
+            <li><a href="{{route('chofer.create')}}" class="hover:cursor-pointer hover:underline">Agregar Chofer</a></li>
+            <li><a href="{{route('guarda.create')}}" class="hover:cursor-pointer hover:underline">Agregar Guarda</a></li>
+            <li><a href="{{route('pasajero.create')}}" class="hover:cursor-pointer hover:underline">Agregar Pasajero</a></li>
+            <li><a href="{{route('camioneta.create')}}" class="hover:cursor-pointer hover:underline">Agregar Camioneta</a></li>
         </ul>
     </div>
 

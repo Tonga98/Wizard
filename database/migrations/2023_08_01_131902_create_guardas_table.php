@@ -19,12 +19,14 @@ return new class extends Migration
             $table->unsignedInteger('dni_num')->unique();
             $table->string('email',191)->nullable()->unique();
             $table->string('ubicacion', 255)->nullable();
-            $table->integer('num_telefono')->nullable()->unique();
+            $table->bigInteger('num_telefono')->nullable()->unique();
             $table->string('dni_frente', 255)->nullable();
             $table->string('dni_dorso', 255)->nullable();
             $table->string('antecedentes_foto', 255)->nullable();
             $table->date('antecedentes_venc')->nullable();
             $table->string('password');
+            $table->rememberToken();
+            $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
 
             //Foreing keys

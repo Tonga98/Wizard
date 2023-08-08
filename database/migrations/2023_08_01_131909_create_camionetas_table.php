@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('patente')->unique();
             $table->string('ubicacion');
-            $table->string('vtv_vencimiento');
+            $table->date('vtv_vencimiento')->nullable();
             $table->timestamps();
 
             $table->engine = 'InnoDB';
