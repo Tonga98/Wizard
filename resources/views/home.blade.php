@@ -16,7 +16,7 @@
 
     <!--List of the menu-->
     @if(isset($list))
-        <x-list :list="$list" :title="$title"></x-list>
+        <x-list :list="$list" :title="$title" :link="$link"></x-list>
     @else
         <x-options></x-options>
     @endif

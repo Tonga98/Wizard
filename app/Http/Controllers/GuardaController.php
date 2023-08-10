@@ -17,19 +17,22 @@ class GuardaController extends Controller
 
     public function store(NewGuardaRequest $request)
     {
+        //Obtengo todos los datos que estan correctamente validados
+        $validatedData = $request->validated();
+
         $user = Guarda::create([
-            'ubicacion' => $request->ubicacion,
-            'num_telefono' => $request->num_telefono,
-            'antecedentes_foto' => $request->antecedentes_foto,
-            'antecedentes_venc' => $request->antecedentes_venc,
-            'dni_frente' => $request->dni_frente,
-            'dni_dorso' => $request->dni_dorso,
-            'nombre' => $request->nombre,
-            'apellido' => $request->apellido,
-            'camioneta_id' => $request->id_camioneta,
-            'dni_num' => $request->dni_num,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'ubicacion' => $validatedData['ubicacion'],
+            'num_telefono' => $validatedData['num_telefono'],
+            'antecedentes_foto' => $validatedData['antecedentes_foto'] ?? '',
+            'antecedentes_venc' => $validatedData['antecedentes_venc'],
+            'dni_frente' => $validatedData['dni_frente'] ?? '',
+            'dni_dorso' => $validatedData['dni_dorso'] ?? '',
+            'nombre' => $validatedData['nombre'],
+            'apellido' => $validatedData['apellido'],
+            'camioneta_id' => $validatedData['id_camioneta'],
+            'dni_num' => $validatedData['dni_num'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
         ]);
 
         event(new Registered($user));
@@ -43,11 +46,33 @@ class GuardaController extends Controller
         //Declaracion de variables
         $guardas = [];
         $title = "Guardas";
+        $link = "guarda";
 
         //Recupero todos los usuarios
         $guardas = Guarda::all();
 
         //Retorno vista home con lista de choferes
-        return view('home',['list'=> $guardas, 'title'=>$title]);
+        return view('home',['list'=> $guardas, 'title'=>$title, 'link'=>$link]);
+    }
+
+    public function show(int $id): view{
+        //Este metodo retorna la guarda con el id = $id
+
+        //Obtengo la guarda de la db
+        $guarda = Guarda::find($id);
+
+        //Obtengo la camioneta en la cual anda la guarda
+        $camioneta = $guarda->camioneta;
+
+        return view('detail.guarda', ['guarda'=>$guarda, 'camioneta' => $camioneta]);
+    }
+
+    public function edit(int $id): view{
+        //id se refiere al id de la guarda a editar
+
+        //Obtengo la guarda
+        $guarda = Guarda::find($id);
+
+        return view('create.guarda', ['guarda'=>$guarda, 'edit'=>true]);
     }
 }

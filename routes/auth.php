@@ -41,18 +41,15 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('login')->group(function () {
 
-    //RUTAS CRUD CHOFER
-    Route::resource('chofer', ChoferController::class);
+    //RUTAS CRUD
+    Route::resources([
+        'chofer' => ChoferController::class,
+        'guarda'=> GuardaController::class,
+        'pasajero' => PasajeroController::class
+    ]);
 
-    //RUTAS CRUD GUARDA
-    Route::resource('guarda', GuardaController::class);
-
-    //RUTAS CRUD PASAJERO
-    Route::resource('pasajero', PasajeroController::class);
-
-    //RUTAS CRUD CAMIONETA
-    Route::resource('camioneta', CamionetaController::class);
-
+    //RUTA CRUD CAMIONETA SEPARADA PORQUE TENIA QUE CAMBIAR EL PARAMETER
+    Route::resource('camioneta', CamionetaController::class)->parameters(['camioneta'=> 'camioneta']);
 
     Route::get('verify-email', EmailVerificationPromptController::class)
                 ->name('verification.notice');

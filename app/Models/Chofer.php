@@ -15,7 +15,7 @@ class Chofer extends Authenticatable
     //Tabla que utiliza el modelo
     protected $table = "choferes";
 
-    //Atributos que no puedo llenar al crear un modelo
+    //Atributos que no puedo llenar al crear un modelo, to do el resto es fillable
     protected $guarded = ['admin'];
 
     //Asigno de que tipo tienen que ser ciertos datos

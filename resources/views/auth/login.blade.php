@@ -8,7 +8,7 @@
         <!-- Dni number -->
         <div>
             <x-input-label for="dni_num" :value="__('DNI')" />
-            <x-text-input id="dni_num" class="block mt-1 w-full" type="number" name="dni_num" :value="old('email')" required autofocus autocomplete="username" />
+            <x-text-input id="dni_num" class="block mt-1 w-full" type="number" name="dni_num" :value="old('email')" required autofocus autocomplete="dni_num" />
             <x-input-error :messages="$errors->get('dni_num')" class="mt-2" />
         </div>
 
