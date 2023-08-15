@@ -12,10 +12,18 @@
                 </ul>
 
             </div>
-            <div class="flex items-center justify-end mt-4">
+            <div class="flex items-center gap-2 justify-end mt-4">
                 <a href="{{route('camioneta.edit',['camioneta'=>$camioneta->id])}}"
                    class="px-4 py-2 bg-gray-800 rounded-md font-semibold text-xs text-white hover:bg-gray-700">EDITAR
                     CAMIONETA</a>
+                <form action="{{ route('camioneta.destroy', ['camioneta' => $camioneta->id]) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit" class="px-4 py-2 bg-red-800 rounded-md font-semibold text-xs text-white hover:bg-red-700">
+                        ELIMINAR CAMIOENTA
+                    </button>
+                </form>
             </div>
         </div>
     </div>

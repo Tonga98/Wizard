@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="flex justify-center">
-        <div class="rounded-lg w-3/5 shadow-3xl bg-[#FFFFFF] m-5 p-5">
+        <div class="rounded-lg w-3/5 shadow-3xl bg-white/60 m-5 p-5">
             <h1 class=" font-semibold text-3xl mb-5">{{$chofer->nombre." ". $chofer->apellido}}</h1>
 
             <div class="flex justify-evenly">
@@ -27,10 +27,20 @@
                     </li>
                 </ul>
             </div>
-            <div class="flex items-center justify-end mt-4">
+            <div class="flex items-center gap-2 justify-end mt-4">
                 <a href="{{route('chofer.edit',['chofer'=>$chofer->id])}}"
                    class="px-4 py-2 bg-gray-800 rounded-md font-semibold text-xs text-white hover:bg-gray-700">EDITAR
                     CHOFER</a>
+
+                <form action="{{ route('chofer.destroy', ['chofer' => $chofer->id]) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit" class="px-4 py-2 bg-red-800 rounded-md font-semibold text-xs text-white hover:bg-red-700">
+                        ELIMINAR CHOFER
+                    </button>
+                </form>
+
             </div>
         </div>
     </div>

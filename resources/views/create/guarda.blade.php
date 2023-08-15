@@ -10,7 +10,7 @@
     <div class="flex justify-center mx-4">
         <div class="w-full mt-6 px-6 py-4 bg-white shadow-md overflow-hidden rounded-lg">
             <h2 class="font-semibold text-3xl tracking-wider">{{$edit ? 'Editar guarda':'Añadir guarda'}}</h2>
-            <form method="POST" action="{{ route('guarda.store') }}" enctype="multipart/form-data" class="flex justify-between my-4">
+            <form method="POST" action="{{ $edit ? route('guarda.update',['guarda'=>$guarda]) :route('guarda.store') }}" enctype="multipart/form-data" class="flex justify-between my-4">
                 @csrf
 
                 @if($edit)
@@ -115,7 +115,8 @@
                         <x-text-input id="password" class="w-full"
                                       type="password"
                                       name="password"
-                                      required autocomplete="new-password" />
+                                      :require="$edit"
+                                      autocomplete="new-password" />
 
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
@@ -126,7 +127,9 @@
 
                         <x-text-input id="password_confirmation" class="w-full"
                                       type="password"
-                                      name="password_confirmation" required autocomplete="new-password" />
+                                      name="password_confirmation"
+                                      :require="$edit"
+                                      autocomplete="new-password" />
 
                         <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                     </div>

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Guarda;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 use App\Http\Requests\NewGuardaRequest;
+use App\Http\Requests\UpdateGuardaRequest;
 
 class GuardaController extends Controller
 {
@@ -15,7 +17,7 @@ class GuardaController extends Controller
         return view('create.guarda');
     }
 
-    public function store(NewGuardaRequest $request)
+    public function store(NewGuardaRequest $request) : RedirectResponse
     {
         //Obtengo todos los datos que estan correctamente validados
         $validatedData = $request->validated();
@@ -29,7 +31,7 @@ class GuardaController extends Controller
             'dni_dorso' => $validatedData['dni_dorso'] ?? '',
             'nombre' => $validatedData['nombre'],
             'apellido' => $validatedData['apellido'],
-            'camioneta_id' => $validatedData['id_camioneta'],
+            'camioneta_id' => $validatedData['camioneta_id'],
             'dni_num' => $validatedData['dni_num'],
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
@@ -74,5 +76,35 @@ class GuardaController extends Controller
         $guarda = Guarda::find($id);
 
         return view('create.guarda', ['guarda'=>$guarda, 'edit'=>true]);
+    }
+
+    public function update(UpdateGuardaRequest $request, Guarda $guarda) : RedirectResponse{
+
+        //Obtengo los datos validados correctamente
+        $validatedData = $request->validated();
+
+        //Verifico si cambio la password la actualizo
+        if($validatedData['password'] !== null){
+            $validatedData['password'] = Hash::make($validatedData['password']);
+        }else{
+            unset($validatedData['password']);
+        }
+
+        //Actualizo los datos de la guarda
+        $guarda->update($validatedData);
+
+        return redirect()->route('guarda.show',['guarda'=>$guarda->id]);
+
+    }
+
+    public function destroy(int $id):RedirectResponse{
+
+        //Obtengo la guarda
+        $guarda = Guarda::find($id);
+
+        //Elimino la guarda
+        $guarda->delete();
+
+        return redirect(route('guarda.index'));
     }
 }

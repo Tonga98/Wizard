@@ -10,7 +10,7 @@
     <div class="flex justify-center mx-4">
         <div class="w-full mt-6 px-6 py-4 bg-white shadow-md overflow-hidden rounded-lg">
             <h2 class="font-semibold text-3xl tracking-wider">{{$edit ? 'Editar pasajero':'Añadir pasajero'}}</h2>
-            <form method="POST" action="{{ route('pasajero.store') }}" enctype="multipart/form-data" class="flex justify-between my-4">
+            <form method="POST" action="{{ $edit ? route('pasajero.update', ['pasajero'=>$pasajero]) : route('pasajero.store') }}" enctype="multipart/form-data" class="flex justify-between my-4">
                 @csrf
 
                 @if($edit)
@@ -49,9 +49,9 @@
 
                     <!-- Camioneta -->
                     <div>
-                        <x-input-label for="id_camioneta " :value="__('Camioneta')" />
-                        <x-text-input id="id_camioneta " class="w-full" type="select" name="id_camioneta " :value="$edit ? $pasajero->camioneta_id : old('camioneta_id ')" required autocomplete="id_camioneta " />
-                        <x-input-error :messages="$errors->get('id_camioneta ')" class="mt-2" />
+                        <x-input-label for="camioneta_id" :value="__('Camioneta')" />
+                        <x-text-input id="camioneta_id " class="w-full" type="select" name="camioneta_id " :value="$edit ? $pasajero->camioneta_id : old('camioneta_id ')" required autocomplete="camioneta_id " />
+                        <x-input-error :messages="$errors->get('camioneta_id ')" class="mt-2" />
                     </div>
 
                     <div class="flex items-center justify-end mt-4">

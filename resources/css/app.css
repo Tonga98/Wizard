@@ -6,7 +6,15 @@
     font-family: 'ModernAntiqua';
     src: url("../fonts/ModernAntiqua-Regular.ttf") format('truetype');
 }
+@layer components{
+    .fondo{
+        background-image: url('http://wizard.com.devel/../img/fondo.jpeg') ;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+}
+
 /* @layer components{
+background-image: url('http://wizard.com.devel/../img/fondo.jpeg') ;
     .card {
         padding: 20px;
         border-radius: 5px;

@@ -13,6 +13,7 @@ use App\Http\Requests\NewChoferRequest;
 class ChoferController extends Controller
 {
     public function create(): View
+
     {
         return view('create.chofer');
     }
@@ -102,5 +103,16 @@ class ChoferController extends Controller
         $chofer->update($validatedData);
 
         return redirect()->route('chofer.show',['chofer'=>$chofer->id]);
+    }
+
+    public function destroy(int $id):RedirectResponse{
+
+        //Obtengo el chofer
+        $chofer = Chofer::find($id);
+
+        //Elimino el chofer
+        $chofer->delete();
+
+        return redirect(route('chofer.index'));
     }
 }

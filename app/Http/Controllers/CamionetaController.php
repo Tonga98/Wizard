@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Camioneta;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -15,7 +16,7 @@ class CamionetaController extends Controller
         return view('create.camioneta');
     }
 
-    public function store(Request $request)
+    public function store(Request $request) : RedirectResponse
     {
         //Valido los datos
         $request->validate([
@@ -69,5 +70,31 @@ class CamionetaController extends Controller
         $camioneta = Camioneta::find($id);
 
         return view('create.camioneta', ['camioneta'=>$camioneta, 'edit'=>true]);
+    }
+
+    public function update(Request $request, Camioneta $camioneta)
+    {
+        //Valido los datos
+        $request->validate([
+            'patente' => [ 'string', 'max:255', Rule::unique(Camioneta::class)->ignore($camioneta->id)],
+            'vtv_vencimiento' => ['date'],
+            'ubicacion' => ['string', 'max:255'],
+        ]);
+
+        //Actualizo los datos de la camioneta, utilizo el metodo all para pasar los datos en array
+        $camioneta->update($request->all());
+
+        return redirect()->route('camioneta.show',['camioneta'=>$camioneta->id]);
+    }
+
+    public function destroy(int $id):RedirectResponse{
+
+        //Obtengo el chofer
+        $camioneta = Camioneta::find($id);
+
+        //Elimino el chofer
+        $camioneta->delete();
+
+        return redirect(route('camioneta.index'));
     }
 }

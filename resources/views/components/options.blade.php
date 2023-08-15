@@ -1,5 +1,5 @@
 
-<div class="mx-auto mt-8 md:mt-14 min-w-min  h-min card">
+<div class="mx-auto mt-8 md:mt-14 min-w-min  h-min border border-gray-500/50 shadow-2xl p-2 bg-slate-300/50">
     <h2 class="text-xl mb-2 ml-1">Opciones</h2>
 
     <div class="h-min p-5 max-w-sm md:max-w-none">

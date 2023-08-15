@@ -27,6 +27,7 @@ class NewGuardaRequest extends FormRequest
         return [
             'nombre' => ['required', 'string', 'max:255'],
             'apellido' => ['required', 'string', 'max:255'],
+            'camioneta_id' => ['required'],
             'dni_num' => ['required', 'numeric',Rule::unique(Guarda::class)],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(Guarda::class)],
             'ubicacion' => ['required', 'string', 'max:255'],
