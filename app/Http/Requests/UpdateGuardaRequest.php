@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 use Illuminate\Validation\Rules\Password;
 use App\Models\Guarda;
 
@@ -31,10 +32,10 @@ class UpdateGuardaRequest extends FormRequest
             'email' => [ 'string', 'email', 'max:255', Rule::unique(Guarda::class)->ignore($this->guarda->id)],
             'ubicacion' => [ 'string', 'max:255'],
             'num_telefono' => [ 'integer',Rule::unique(Guarda::class)->ignore($this->guarda->id)],
-            'antecedentes_foto' => [ 'image', 'mimes: jpg, jpeg, png'],
+            'antecedentes_foto' => [File::types(['pdf', 'jpg', 'jpeg', 'png'])->max(4*1024)],
             'antecedentes_venc' => [ 'date'],
-            'dni_frente' => ['image',  'mimes: jpg, jpeg, png'],
-            'dni_dorso' => ['image',  'mimes: jpg, jpeg, png'],
+            'dni_frente' => [File::types(['pdf', 'jpg', 'jpeg', 'png'])->max(4*1024)],
+            'dni_dorso' => [File::types(['pdf', 'jpg', 'jpeg', 'png'])->max(4*1024)],
             'camioneta_id'=> ['integer'],
             'password' => ['confirmed', Password::defaults(), 'nullable'],
         ];

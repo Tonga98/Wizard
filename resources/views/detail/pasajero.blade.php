@@ -1,8 +1,8 @@
 @extends('layouts.myApp')
 
 @section('content')
-    <div class="flex justify-center">
-        <div class="rounded-lg w-3/5 shadow-3xl bg-[#FFFFFF] m-5 p-5">
+    <div class="h-full items-center flex justify-center">
+        <div class="rounded-lg shadow-3xl bg-white/60 m-5 p-5">
             <h1 class=" font-semibold text-3xl mb-5">{{$pasajero->nombre." ". $pasajero->apellido}}</h1>
 
             <div class="flex justify-evenly">

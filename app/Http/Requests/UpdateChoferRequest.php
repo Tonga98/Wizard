@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\Chofer;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 use Illuminate\Validation\Rules\Password;
 
 class UpdateChoferRequest extends FormRequest
@@ -32,14 +33,14 @@ class UpdateChoferRequest extends FormRequest
             'ubicacion' => ['string', 'max:255'],
             'num_telefono' => ['integer', Rule::unique(Chofer::class)->ignore($this->chofer->id)],
             'id_camioneta' => ['integer'],
-            'antecedentes_foto' => [ 'image', 'mimes: jpg, jpeg, png'],
+            'antecedentes_foto' => [File::types(['pdf', 'jpg', 'jpeg', 'png'])->max(4*1024)],
             'antecedentes_venc' => ['date'],
             'lic_conducir_venc' => ['date'],
-            'lic_conducir_frente' => [ 'image',  'mimes: jpg, jpeg, png'],
-            'lic_conducir_dorso' => [ 'image',  'mimes: jpg, jpeg, png'],
+            'lic_conducir_frente' => [File::types(['pdf', 'jpg', 'jpeg', 'png'])->max(4*1024)],
+            'lic_conducir_dorso' => [File::types(['pdf', 'jpg', 'jpeg', 'png'])->max(4*1024)],
             'linti_venc' => ['date'],
-            'dni_frente' => ['image',  'mimes: jpg, jpeg, png'],
-            'dni_dorso' => ['image',  'mimes: jpg, jpeg, png'],
+            'dni_frente' => [File::types(['pdf', 'jpg', 'jpeg', 'png'])->max(4*1024)],
+            'dni_dorso' => [File::types(['pdf', 'jpg', 'jpeg', 'png'])->max(4*1024)],
             'password' => ['confirmed', Password::defaults(), 'nullable'],
         ];
     }

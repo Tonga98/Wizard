@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 use App\Http\Requests\NewChoferRequest;
+use Storage;
 
 class ChoferController extends Controller
 {
@@ -24,18 +25,42 @@ class ChoferController extends Controller
         //Obtengo todos los datos que estan correctamente validados
         $validatedData = $request->validated();
 
+        //Creo array con los nombres de los archivos a recorrer
+        $filesFields = ["antecedentes_foto", 'lic_conducir_frente', 'lic_conducir_dorso', 'dni_frente', 'dni_dorso'];
+        $fileNames=[];
+
+        foreach ($filesFields as $fileField){
+
+            //Si llego el campo con un archivo
+            if(!empty($validatedData[$fileField])){
+
+                //Guardo el archivo en el storage
+                $file = $validatedData[$fileField];
+                $fileName = time().'-'.$file->getClientOriginalName();
+                $file->storeAs('choferes', $fileName);
+
+                //Guardo los nombres de los campos input con el nombre del archivo guardado en el storage asociado
+                $fileNames[$fileField] = $fileName;
+            }else{
+                $validatedData[$fileField] = null;
+            }
+
+        }
+
+
+
         //Creo el nuevo chofer
         $user = Chofer::create([
             'ubicacion' => $validatedData['ubicacion'],
             'num_telefono' => $validatedData['num_telefono'],
-            'antecedentes_foto' => $validatedData['antecedentes_foto'] ?? '',
+            'antecedentes_foto' => $fileNames['antecedentes_foto'] ?? null,
             'antecedentes_venc' => $validatedData['antecedentes_venc'],
             'lic_conducir_venc' => $validatedData['lic_conducir_venc'],
-            'lic_conducir_frente' => $validatedData['lic_conducir_frente'] ?? '',
-            'lic_conducir_dorso' => $validatedData['lic_conducir_dorso'] ?? '',
+            'lic_conducir_frente' => $fileNames['lic_conducir_frente'] ?? null,
+            'lic_conducir_dorso' => $fileNames['lic_conducir_dorso'] ?? null,
             'linti_venc' => $validatedData['linti_venc'],
-            'dni_frente' => $validatedData['dni_frente'] ?? '',
-            'dni_dorso' => $validatedData['dni_dorso'] ?? '',
+            'dni_frente' => $fileNames['dni_frente'] ?? null,
+            'dni_dorso' => $fileNames['dni_dorso'] ?? null,
             'nombre' => $validatedData['nombre'],
             'apellido' => $validatedData['apellido'],
             'id_camioneta' => $validatedData['id_camioneta'],
@@ -99,6 +124,22 @@ class ChoferController extends Controller
             unset($validatedData['password']);
         }
 
+        //Creo array con los nombres de los archivos a recorrer
+        $filesFields = ["antecedentes_foto", 'lic_conducir_frente', 'lic_conducir_dorso', 'dni_frente', 'dni_dorso'];
+
+        foreach ($filesFields as $fileField){
+
+            //Si llego el campo con un archivo
+            if(!empty($validatedData[$fileField])){
+
+                //Guardo el archivo en el storage
+                $file = $validatedData[$fileField];
+                $fileName = time().'-'.$file->getClientOriginalName();
+                $file->storeAs('choferes', $fileName);
+                $validatedData[$fileField] = $fileName;
+            }
+        }
+
         //Cargo los atributos en el modelo
         $chofer->update($validatedData);
 
@@ -110,8 +151,24 @@ class ChoferController extends Controller
         //Obtengo el chofer
         $chofer = Chofer::find($id);
 
+        //Obtengo los nombres de los archivos asociados al chofer
+        $archivosAEliminar = [
+            $chofer->antecedentes_foto ,
+            $chofer->lic_conducir_frente,
+            $chofer->lic_conducir_dorso,
+            $chofer->dni_frente ,
+            $chofer->dni_dorso ,
+        ];
+
         //Elimino el chofer
         $chofer->delete();
+
+        //Elimino los archivos del almacenamiento
+        foreach ($archivosAEliminar as $archivo) {
+            if (!empty($archivo)) {
+                Storage::delete('choferes/' . $archivo);
+            }
+        }
 
         return redirect(route('chofer.index'));
     }

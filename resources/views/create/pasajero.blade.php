@@ -8,7 +8,7 @@
     @endif
 
     <div class="flex justify-center mx-4">
-        <div class="w-full mt-6 px-6 py-4 bg-white shadow-md overflow-hidden rounded-lg">
+        <div class="w-auto mt-6 px-6 py-4 bg-white shadow-md overflow-hidden rounded-lg">
             <h2 class="font-semibold text-3xl tracking-wider">{{$edit ? 'Editar pasajero':'Añadir pasajero'}}</h2>
             <form method="POST" action="{{ $edit ? route('pasajero.update', ['pasajero'=>$pasajero]) : route('pasajero.store') }}" enctype="multipart/form-data" class="flex justify-between my-4">
                 @csrf

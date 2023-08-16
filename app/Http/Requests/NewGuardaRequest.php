@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Guarda;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Rule;
-
+use Illuminate\Validation\Rules\File;
 class NewGuardaRequest extends FormRequest
 {
     /**
@@ -32,10 +32,10 @@ class NewGuardaRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(Guarda::class)],
             'ubicacion' => ['required', 'string', 'max:255'],
             'num_telefono' => ['required', 'integer',Rule::unique(Guarda::class)],
-            'antecedentes_foto' => [ 'image', 'mimes: jpg, jpeg, png'],
+            'antecedentes_foto' => [File::types(['pdf', 'jpg', 'jpeg', 'png'])->max(4*1024)],
             'antecedentes_venc' => ['required', 'date'],
-            'dni_frente' => ['image',  'mimes: jpg, jpeg, png'],
-            'dni_dorso' => ['image',  'mimes: jpg, jpeg, png'],
+            'dni_frente' => [File::types(['pdf', 'jpg', 'jpeg', 'png'])->max(4*1024)],
+            'dni_dorso' => [File::types(['pdf', 'jpg', 'jpeg', 'png'])->max(4*1024)],
             'password' => ['required', 'confirmed', Password::defaults()],
         ];
     }

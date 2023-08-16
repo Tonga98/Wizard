@@ -1,7 +1,7 @@
 @props(['list', 'title', 'link'])
 <!--list se refiere a la lista la cual contiene todos los elementos de una tabla ej:(choferes, camionetas, ..etc)-->
 
-<div class="mx-auto mt-8 md:mt-14 min-w-min h-min border border-gray-500/50 shadow-2xl bg-slate-300/50 p-2">
+<div class="min-w-min h-min border border-gray-500/50 shadow-2xl bg-slate-300/50 p-2">
     <h2 class="text-xl mb-2 ml-1">{{$title}}</h2>
 
     <div class="h-min p-5 max-w-sm md:max-w-none">
