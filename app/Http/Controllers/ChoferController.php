@@ -128,11 +128,14 @@ class ChoferController extends Controller
         $filesFields = ["antecedentes_foto", 'lic_conducir_frente', 'lic_conducir_dorso', 'dni_frente', 'dni_dorso'];
 
         foreach ($filesFields as $fileField){
-
             //Si llego el campo con un archivo
             if(!empty($validatedData[$fileField])){
 
-                //Guardo el archivo en el storage
+                //Elimino el archivo que tenia antes
+                $oldFile = $chofer->$fileField;
+                Storage::delete('choferes/'.$oldFile);
+
+                //Guardo el nuevo archivo en el storage
                 $file = $validatedData[$fileField];
                 $fileName = time().'-'.$file->getClientOriginalName();
                 $file->storeAs('choferes', $fileName);
@@ -171,5 +174,23 @@ class ChoferController extends Controller
         }
 
         return redirect(route('chofer.index'));
+    }
+
+    public function eliminarArchivo(String $archivo, String $campo):RedirectResponse{
+        //Este metodo elimina un archivo del storage con el nombre de $archivo
+
+        //Obtengo el chofer
+        $chofer = Chofer::where($campo, $archivo)->first();
+
+        if ($chofer) {
+
+          // Elimino el archivo del storage
+            Storage::delete('choferes/'.$archivo);
+
+          // Actualizo la base de datos
+            $chofer->update([$campo => null]);
+        }
+
+        return back();
     }
 }

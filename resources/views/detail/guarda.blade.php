@@ -15,9 +15,9 @@
                 </ul>
 
                 <ul class="mt-2">
-                    <x-li :dato="$guarda->dni_frente">{{"DNI frente: "}}</x-li>
-                    <x-li :dato="$guarda->dni_dorso">{{"DNI dorso: "}}</x-li>
-                    <x-li :dato="$guarda->antecedentes_foto">{{"Antecedentes: "}}</x-li>
+                    <x-li :dato="$guarda->dni_frente" :file="true" campo="dni_frente" model="guarda">{{"DNI frente: "}}</x-li>
+                    <x-li :dato="$guarda->dni_dorso" :file="true" campo="dni_dorso" model="guarda">{{"DNI dorso: "}}</x-li>
+                    <x-li :dato="$guarda->antecedentes_foto" :file="true" campo="antecedentes_foto" model="guarda">{{"Antecedentes: "}}</x-li>
                     <li class="mt-4 w-fit">{{"Camioneta: "}}<a href="{{route('camioneta.show',['camioneta'=>$camioneta->id])}}"
                                                                class="underline underline-offset-2">{{$camioneta->patente}}</a>
                     </li>

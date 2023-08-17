@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 use App\Http\Requests\NewGuardaRequest;
 use App\Http\Requests\UpdateGuardaRequest;
+use Storage;
 
 class GuardaController extends Controller
 {
@@ -22,13 +23,35 @@ class GuardaController extends Controller
         //Obtengo todos los datos que estan correctamente validados
         $validatedData = $request->validated();
 
+        //Creo array con los nombres de los archivos a recorrer
+        $filesFields = ["antecedentes_foto", 'dni_frente', 'dni_dorso'];
+        $fileNames=[];
+
+        foreach ($filesFields as $fileField){
+
+            //Si llego el campo con un archivo
+            if(!empty($validatedData[$fileField])){
+
+                //Guardo el archivo en el storage
+                $file = $validatedData[$fileField];
+                $fileName = time().'-'.$file->getClientOriginalName();
+                $file->storeAs('guardas', $fileName);
+
+                //Guardo los nombres de los campos input con el nombre del archivo guardado en el storage asociado
+                $fileNames[$fileField] = $fileName;
+            }else{
+                $validatedData[$fileField] = null;
+            }
+
+        }
+
         $user = Guarda::create([
             'ubicacion' => $validatedData['ubicacion'],
             'num_telefono' => $validatedData['num_telefono'],
-            'antecedentes_foto' => $validatedData['antecedentes_foto'] ?? '',
+            'antecedentes_foto' => $fileNames['antecedentes_foto'] ?? null,
             'antecedentes_venc' => $validatedData['antecedentes_venc'],
-            'dni_frente' => $validatedData['dni_frente'] ?? '',
-            'dni_dorso' => $validatedData['dni_dorso'] ?? '',
+            'dni_frente' => $fileNames['dni_frente'] ?? null,
+            'dni_dorso' => $fileNames['dni_dorso'] ?? null,
             'nombre' => $validatedData['nombre'],
             'apellido' => $validatedData['apellido'],
             'camioneta_id' => $validatedData['camioneta_id'],
@@ -90,6 +113,25 @@ class GuardaController extends Controller
             unset($validatedData['password']);
         }
 
+        //Creo array con los nombres de los archivos a recorrer
+        $filesFields = ["antecedentes_foto", 'dni_frente', 'dni_dorso'];
+
+        foreach ($filesFields as $fileField){
+            //Si llego el campo con un archivo
+            if(!empty($validatedData[$fileField])){
+
+                //Elimino el archivo que tenia antes
+                $oldFile = $guarda->$fileField;
+                Storage::delete('guardas/'.$oldFile);
+
+                //Guardo el nuevo archivo en el storage
+                $file = $validatedData[$fileField];
+                $fileName = time().'-'.$file->getClientOriginalName();
+                $file->storeAs('guardas', $fileName);
+                $validatedData[$fileField] = $fileName;
+            }
+        }
+
         //Actualizo los datos de la guarda
         $guarda->update($validatedData);
 
@@ -102,9 +144,41 @@ class GuardaController extends Controller
         //Obtengo la guarda
         $guarda = Guarda::find($id);
 
+        //Obtengo los nombres de los archivos asociados a la guarda
+        $archivosAEliminar = [
+            $guarda->antecedentes_foto ,
+            $guarda->dni_frente ,
+            $guarda->dni_dorso ,
+        ];
+
         //Elimino la guarda
         $guarda->delete();
 
+        //Elimino los archivos del almacenamiento
+        foreach ($archivosAEliminar as $archivo) {
+            if (!empty($archivo)) {
+                Storage::delete('guardas/' . $archivo);
+            }
+        }
+
         return redirect(route('guarda.index'));
+    }
+
+    public function eliminarArchivo(String $archivo, String $campo):RedirectResponse{
+        //Este metodo elimina un archivo del storage con el nombre de $archivo
+
+        //Obtengo la guarda
+        $guarda = Guarda::where($campo, $archivo)->first();
+
+        if ($guarda) {
+
+            // Elimino el archivo del storage
+            Storage::delete('guardas/'.$archivo);
+
+            // Actualizo la base de datos
+            $guarda->update([$campo => null]);
+        }
+
+        return back();
     }
 }

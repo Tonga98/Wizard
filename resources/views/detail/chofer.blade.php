@@ -17,11 +17,11 @@
                 </ul>
 
                 <ul class="mt-2">
-                    <x-li :dato="$chofer->dni_frente" :file="true">{{"DNI frente: "}}</x-li>
-                    <x-li :dato="$chofer->dni_dorso" :file="true">{{"DNI dorso: "}}</x-li>
-                    <x-li :dato="$chofer->antecedentes_foto" :file="true">{{"Antecedentes: "}}</x-li>
-                    <x-li :dato="$chofer->lic_conducir_frente" :file="true">{{"Licencia frente: "}}</x-li>
-                    <x-li :dato="$chofer->lic_conducir_dorso" :file="true">{{"Licencia dorso: "}}</x-li>
+                    <x-li :dato="$chofer->dni_frente" :file="true" campo="dni_frente">{{"DNI frente: "}}</x-li>
+                    <x-li :dato="$chofer->dni_dorso" :file="true" campo="dni_dorso">{{"DNI dorso: "}}</x-li>
+                    <x-li :dato="$chofer->antecedentes_foto" :file="true" campo="antecedentes_foto">{{"Antecedentes: "}}</x-li>
+                    <x-li :dato="$chofer->lic_conducir_frente" :file="true" campo="lic_conducir_frente">{{"Licencia frente: "}}</x-li>
+                    <x-li :dato="$chofer->lic_conducir_dorso" :file="true" campo="lic_conducir_dorso">{{"Licencia dorso: "}}</x-li>
                     <li class="mt-4 w-fit">{{"Camioneta: "}}<a href="{{route('camioneta.show',['camioneta'=>$camioneta->id])}}"
                                                                class="underline underline-offset-2">{{$camioneta->patente}}</a>
                     </li>

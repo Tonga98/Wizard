@@ -51,6 +51,13 @@ Route::middleware('login')->group(function () {
     //RUTA CRUD CAMIONETA SEPARADA PORQUE TENIA QUE CAMBIAR EL PARAMETER
     Route::resource('camioneta', CamionetaController::class)->parameters(['camioneta'=> 'camioneta']);
 
+    //RUTA ELIMINAR ARCHIVO CHOFER
+    Route::get('eliminar/chofer/{archivo}/{campo}', [ChoferController::class, 'eliminarArchivo'])->name('eliminar.archivo.chofer');
+
+    //RUTA ELIMINAR ARCHIVO GUARDA
+    Route::get('eliminar/guarda/{archivo}/{campo}', [GuardaController::class, 'eliminarArchivo'])->name("eliminar.archivo.guarda");
+
+
     Route::get('verify-email', EmailVerificationPromptController::class)
                 ->name('verification.notice');
 

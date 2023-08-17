@@ -70,7 +70,7 @@
                     <!-- Antecedentes_foto -->
                     <div>
                         <x-input-label for="antecedentes_foto" :value="__('Antecedentes foto')" />
-                        <x-text-input id="antecedentes_foto" class="w-full" type="file" name="name" :value="$edit ? $guarda->antecedentes_foto : old('antecedentes_foto')" autofocus autocomplete="antecedentes_foto" />
+                        <x-text-input id="antecedentes_foto" class="w-full" type="file" name="antecedentes_foto" :value="$edit ? $guarda->antecedentes_foto : old('antecedentes_foto')" autofocus autocomplete="antecedentes_foto" />
                         <x-input-error :messages="$errors->get('antecedentes_foto')" class="mt-2" />
                     </div>
 
