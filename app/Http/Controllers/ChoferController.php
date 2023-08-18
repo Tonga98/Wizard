@@ -19,7 +19,7 @@ class ChoferController extends Controller
         return view('create.chofer');
     }
 
-    public function store(NewChoferRequest $request)
+    public function store(NewChoferRequest $request): RedirectResponse
     {
 
         //Obtengo todos los datos que estan correctamente validados
@@ -83,7 +83,7 @@ class ChoferController extends Controller
         $link ="chofer";
 
         //Recupero todos los usuarios
-        $choferes = Chofer::all();
+        $choferes = Chofer::simplePaginate(10);
 
         //Retorno vista home con lista de choferes
         return view('home',['list'=> $choferes, 'title'=>$title, 'link'=>$link]);

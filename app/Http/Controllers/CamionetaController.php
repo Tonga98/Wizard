@@ -49,7 +49,7 @@ class CamionetaController extends Controller
         $link = "camioneta";
 
         //Recupero todos las camionetas
-        $camionetas = Camioneta::all();
+        $camionetas = Camioneta::paginate(10);
 
         //Retorno vista home con lista de camionetas
         return view('home',['list'=> $camionetas, 'title'=>$title, 'link' =>$link]);

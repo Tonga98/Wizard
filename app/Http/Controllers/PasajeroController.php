@@ -52,7 +52,7 @@ class PasajeroController extends Controller
         $link = "pasajero";
 
         //Recupero todos los pasajeros
-        $pasajeros = Pasajero::all();
+        $pasajeros = Pasajero::paginate(10);
 
         //Retorno vista home con lista de pasajeros
         return view('home',['list'=> $pasajeros, 'title'=>$title, 'link' => $link]);

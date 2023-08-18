@@ -74,7 +74,7 @@ class GuardaController extends Controller
         $link = "guarda";
 
         //Recupero todos los usuarios
-        $guardas = Guarda::all();
+        $guardas = Guarda::paginate(10);
 
         //Retorno vista home con lista de choferes
         return view('home',['list'=> $guardas, 'title'=>$title, 'link'=>$link]);
