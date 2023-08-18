@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 use App\Http\Requests\NewChoferRequest;
 use Storage;
+use Illuminate\Http\Request;
 
 class ChoferController extends Controller
 {
@@ -192,5 +193,24 @@ class ChoferController extends Controller
         }
 
         return back();
+    }
+
+    public function search(Request $request) :View{
+        //Este metodo busca choferes
+
+        //Valido la request
+        $request->validate(['search'=> "required|string|max:255"]);
+
+        $busqueda = $request->input('search');
+        $title = "Choferes";
+        $link ="chofer";
+
+        // Realizar la búsqueda en la base de datos
+        $list = Chofer::where('nombre', 'LIKE', "%$busqueda%")
+            ->orWhere('ubicacion', 'LIKE', "%$busqueda%")
+            ->paginate(10);
+
+        //Retorno la lista de los choferes
+        return view('home',['list'=> $list, 'title'=>$title, 'link'=>$link]);
     }
 }

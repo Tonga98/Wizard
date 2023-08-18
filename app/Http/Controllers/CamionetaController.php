@@ -97,4 +97,23 @@ class CamionetaController extends Controller
 
         return redirect(route('camioneta.index'));
     }
+
+    public function search(Request $request) :View{
+        //Este metodo busca camionetas
+
+        //Valido la request
+        $request->validate(['search'=> "required|string|max:255"]);
+
+        $busqueda = $request->input('search');
+        $title = "Camionetas";
+        $link ="camioneta";
+
+        // Realizar la búsqueda en la base de datos
+        $list = Camioneta::where('patente', 'LIKE', "%$busqueda%")
+            ->orWhere('ubicacion', 'LIKE', "%$busqueda%")
+            ->paginate(10);
+
+        //Retorno la lista de los choferes
+        return view('home',['list'=> $list, 'title'=>$title, 'link'=>$link]);
+    }
 }

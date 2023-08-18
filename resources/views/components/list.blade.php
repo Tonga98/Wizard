@@ -4,7 +4,17 @@
 <div class="w-3/12 border border-gray-500/50 shadow-2xl bg-slate-300/50 p-2">
     <h2 class="text-xl mb-2 ml-1">{{$title}}</h2>
 
-    <div class="p-5 ">
+    <!-- Agregar un formulario de búsqueda -->
+    <form action="{{ route($link.'.search') }}" method="POST" class="pl-5 flex items-center">
+        @csrf
+
+        <input type="text" name="search" placeholder="Buscar por nombre o ubicación"
+               class="w-4/5 p-1 border rounded-md focus:outline-none">
+
+        <button type="submit"><img src="{{asset("img/search.svg")}}" class="w-7 ml-2" alt="Lupa" title="Buscar"></button>
+    </form>
+
+    <div class="p-4">
         <ul class="font-medium text-base mb-2">
             <!--List se refiere a la lista de objetos del controlador que vino-->
             @foreach($list as $element)

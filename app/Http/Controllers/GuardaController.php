@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Guarda;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 use App\Http\Requests\NewGuardaRequest;
@@ -180,5 +181,24 @@ class GuardaController extends Controller
         }
 
         return back();
+    }
+
+    public function search(Request $request) :View{
+        //Este metodo busca guardas
+
+        //Valido la request
+        $request->validate(['search'=> "required|string|max:255"]);
+
+        $busqueda = $request->input('search');
+        $title = "Guardas";
+        $link ="guarda";
+
+        // Realizar la búsqueda en la base de datos
+        $list = Guarda::where('nombre', 'LIKE', "%$busqueda%")
+            ->orWhere('ubicacion',  'LIKE', "%$busqueda%")
+            ->paginate(10);
+
+        //Retorno la lista de los choferes
+        return view('home',['list'=> $list, 'title'=>$title, 'link'=>$link]);
     }
 }

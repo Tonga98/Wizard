@@ -57,6 +57,13 @@ Route::middleware('login')->group(function () {
     //RUTA ELIMINAR ARCHIVO GUARDA
     Route::get('eliminar/guarda/{archivo}/{campo}', [GuardaController::class, 'eliminarArchivo'])->name("eliminar.archivo.guarda");
 
+    //SEARCH MODELS
+    Route::post('chofer/search', [ChoferController::class, 'search'])->name("chofer.search");
+    Route::post('guarda/search', [GuardaController::class, 'search'])->name("guarda.search");
+    Route::post('pasajero/search', [CamionetaController::class, 'search'])->name("camioneta.search");
+    Route::post('camioneta/search', [PasajeroController::class, 'search'])->name("pasajero.search");
+
+
 
     Route::get('verify-email', EmailVerificationPromptController::class)
                 ->name('verification.notice');
