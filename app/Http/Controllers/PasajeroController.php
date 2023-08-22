@@ -9,13 +9,14 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use JetBrains\PhpStorm\Internal\PhpStormStubsElementAvailable;
-
+use App\Models\Camioneta;
 class PasajeroController extends Controller
 {
     public function create(): View
     {
-        return view('create.pasajero');
+        //Obtengo las camionetas para mostrarlas en el select
+        $camionetas = Camioneta::all();
+        return view('create.pasajero',['camionetas' => $camionetas]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -74,7 +75,10 @@ class PasajeroController extends Controller
         //Obtengo el pasajero
         $pasajero = Pasajero::find($id);
 
-        return view('create.pasajero', ['pasajero'=>$pasajero, 'edit'=>true]);
+        //Obtengo las camionetas para mostrarlas en el select
+        $camionetas = Camioneta::all();
+
+        return view('create.pasajero', ['pasajero'=>$pasajero, 'edit'=>true, 'camionetas'=>$camionetas]);
     }
 
     public function update(Request $request, Pasajero $pasajero): RedirectResponse{

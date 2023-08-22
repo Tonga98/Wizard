@@ -11,13 +11,15 @@ use Illuminate\View\View;
 use App\Http\Requests\NewChoferRequest;
 use Storage;
 use Illuminate\Http\Request;
+use App\Models\Camioneta;
 
 class ChoferController extends Controller
 {
     public function create(): View
-
     {
-        return view('create.chofer');
+        //Obtengo las camionetas para mostrarlas en el select
+        $camionetas = Camioneta::all();
+        return view('create.chofer', ['camionetas' => $camionetas]);
     }
 
     public function store(NewChoferRequest $request): RedirectResponse
@@ -109,8 +111,11 @@ class ChoferController extends Controller
         //Obtengo el chofer
         $chofer = Chofer::find($id);
 
+        //Obtengo las camionetas para mostrarlas en el select
+        $camionetas = Camioneta::all();
+
         //Retorno la vista con el chofer
-        return view('create.chofer',['chofer'=>$chofer, 'edit'=>true]);
+        return view('create.chofer',['chofer'=>$chofer, 'edit'=>true,'camionetas'=>$camionetas]);
     }
 
     public function update(UpdateChoferRequest $request, Chofer $chofer): RedirectResponse{

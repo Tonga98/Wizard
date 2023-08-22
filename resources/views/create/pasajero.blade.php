@@ -50,8 +50,11 @@
                     <!-- Camioneta -->
                     <div>
                         <x-input-label for="camioneta_id" :value="__('Camioneta')" />
-                        <x-text-input id="camioneta_id " class="w-full" type="select" name="camioneta_id " :value="$edit ? $pasajero->camioneta_id : old('camioneta_id ')" required autocomplete="camioneta_id " />
-                        <x-input-error :messages="$errors->get('camioneta_id ')" class="mt-2" />
+                        <select id="id_camioneta" name="id_camioneta" class="w-full">
+                            @foreach($camionetas as $camioneta)
+                                <option value="{{ $camioneta->id }}">{{ $camioneta->patente }}</option>
+                            @endforeach
+                        </select>                        <x-input-error :messages="$errors->get('camioneta_id ')" class="mt-2" />
                     </div>
 
                     <div class="flex items-center justify-end mt-4">

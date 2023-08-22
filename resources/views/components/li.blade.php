@@ -24,14 +24,14 @@
 
             <li class="mt-4 w-fit flex items-center">{{$slot." "}}
                 <a href="{{Storage::url('choferes/'.$dato)}}" download> <img class="ml-2 w-8" src="{{asset("img/download.svg")}}"> </a>
-                <a href="{{route('eliminar.archivo.chofer',['archivo'=>$dato, 'campo'=>$campo])}}"> <img class="ml-2 w-8" src="{{asset("img/trash.svg")}}"> </a>
+                <a href="{{route('eliminar.archivo.chofer',['archivo'=>$dato, 'campo'=>$campo])}}"> <img class="ml-2 w-8" src="{{asset("img/trash-alt.svg")}}"> </a>
             </li>
 
         @else   {{--Si el file es del modelo guarda --}}
 
             <li class="mt-4 w-fit flex items-center">{{$slot." "}}
                 <a href="{{Storage::url('guardas/'.$dato)}}" download> <img class="ml-2 w-8" src="{{asset("img/download.svg")}}"> </a>
-                <a href="{{route('eliminar.archivo.guarda',['archivo'=>$dato, 'campo'=>$campo])}}"> <img class="ml-2 w-8" src="{{asset("img/trash.svg")}}"> </a>
+                <a href="{{route('eliminar.archivo.guarda',['archivo'=>$dato, 'campo'=>$campo])}}"> <img class="ml-2 w-8" src="{{asset("img/trash-alt.svg")}}"> </a>
             </li>
 
         @endif

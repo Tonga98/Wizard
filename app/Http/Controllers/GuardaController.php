@@ -11,12 +11,16 @@ use Illuminate\View\View;
 use App\Http\Requests\NewGuardaRequest;
 use App\Http\Requests\UpdateGuardaRequest;
 use Storage;
+use App\Models\Camioneta;
 
 class GuardaController extends Controller
 {
     public function create(): View
     {
-        return view('create.guarda');
+        //Obtengo las camionetas para mostrarlas en el select
+        $camionetas = Camioneta::all();
+
+        return view('create.guarda', ['camionetas' => $camionetas]);
     }
 
     public function store(NewGuardaRequest $request) : RedirectResponse
@@ -99,7 +103,10 @@ class GuardaController extends Controller
         //Obtengo la guarda
         $guarda = Guarda::find($id);
 
-        return view('create.guarda', ['guarda'=>$guarda, 'edit'=>true]);
+        //Obtengo las camionetas para mostrarlas en el select
+        $camionetas = Camioneta::all();
+
+        return view('create.guarda', ['guarda'=>$guarda, 'edit'=>true, 'camionetas'=>$camionetas]);
     }
 
     public function update(UpdateGuardaRequest $request, Guarda $guarda) : RedirectResponse{

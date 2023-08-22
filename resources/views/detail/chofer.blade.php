@@ -2,7 +2,7 @@
 
 @section('content')
     <div class=" h-full flex justify-center items-center">
-        <div class="rounded-lg w-3/5 shadow-3xl bg-white/60 m-5 p-5">
+        <article class="rounded-lg w-3/5 shadow-3xl bg-white/60 m-5 p-5">
             <h1 class=" font-semibold text-3xl mb-5">{{$chofer->nombre." ". $chofer->apellido}}</h1>
 
             <div class="flex justify-evenly">
@@ -42,6 +42,6 @@
                 </form>
 
             </div>
-        </div>
+        </article>
     </div>
 @endsection
