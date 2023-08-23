@@ -14,16 +14,22 @@ class HomeController extends Controller
     public function index() : View{
         //Este metodo muestra la pagina principal con una lista de los elementos proximos a vencer de los modelos
 
-        //Choferes con algun papel vencido o por vencer
-        $vencidos = Chofer::proximosAVencer();
+        //Algún papel vencido o por vencer
+        $vencidosChoferes = Chofer::proximosAVencer();
+        $vencidosCamionetas = Camioneta::proximosAVencer();
+        $vencidosGuardas = Guarda::proximosAVencer();
+
+        // Combino las colecciones de vencidos
+        $vencidos = $vencidosChoferes->concat($vencidosCamionetas)->concat($vencidosGuardas);
+
 
         //Creo un arreglo para los datos a pasar a la vista
         $data = [];
 
-        foreach ($vencidos as $chofer) {
+        foreach ($vencidos as $model) {
             $data[] = [
-                'model' => $chofer,
-                'camposVencidos' => $chofer->camposAVencer(),
+                'model' => $model,
+                'camposVencidos' => $model->camposAVencer(),
             ];
         }
 

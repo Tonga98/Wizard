@@ -34,16 +34,31 @@ class Guarda extends Authenticatable
         return $this->belongsTo(Camioneta::class, 'camioneta_id');
     }
 
-    public static function proximosAVencer(): array {
+    public static function proximosAVencer() {
         //Este metodo retorna las guardas que faltan 1 mes o menos para vencer
 
         //Obtener la fecha del mes próximo
         $mesProximo = Carbon::now()->addMonth();
 
-        return Guarda::where(function ($query) use ($mesProximo) {
-            $query->whereDate('lic_conducir_venc', '<=', $mesProximo)
-                ->orWhereDate('antecedentes_venc', '<=', $mesProximo)
-                ->orWhereDate('linti_venc', '<=', $mesProximo);
+        $guardas = Guarda::where(function ($query) use ($mesProximo) {
+            $query->whereDate('antecedentes_venc', '<=', $mesProximo);
         })->get();
+
+        return $guardas;
+    }
+
+    public function camposAVencer(){
+        //Este modulo retorna los campos a vencer de la guarda
+
+        //Obtener la fecha del mes próximo
+        $mesProximo = Carbon::now()->addMonth();
+
+        //Declaro array
+        $campos = [];
+
+        if($this->antecedentes_venc <= $mesProximo){
+            $campos['Antecedentes'] = $this->antecedentes_venc;
+        }
+        return $campos;
     }
 }

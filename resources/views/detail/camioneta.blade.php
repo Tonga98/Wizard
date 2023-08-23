@@ -2,11 +2,11 @@
 
 @section('content')
     <div class="h-full items-center flex justify-center ">
-        <article class="rounded-lg w-3/5 shadow-3xl bg-white/60 m-5 p-5">
+        <article class="w-2/5 m-5 p-5 cardBlur">
             <h1 class=" font-semibold text-3xl mb-5">{{$camioneta->patente}}</h1>
 
             <div class="flex justify-evenly">
-                <ul class="mt-2">
+                <ul class="mt-2 font-medium text-black">
                     <x-li :dato="$camioneta->ubicacion">{{"Ubicacion: "}}</x-li>
                     <x-li :dato="$camioneta->vtv_vencimiento" :date="true">{{"vtv_vencimiento: "}}</x-li>
                 </ul>

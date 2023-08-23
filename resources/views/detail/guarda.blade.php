@@ -2,10 +2,10 @@
 
 @section('content')
     <div class="h-full items-center flex justify-center">
-        <article class="rounded-lg w-3/5 shadow-3xl bg-white/60 m-5 p-5">
+        <article class="w-3/5 m-5 p-5 cardBlur">
             <h1 class=" font-semibold text-3xl mb-5">{{$guarda->nombre." ". $guarda->apellido}}</h1>
 
-            <div class="flex justify-evenly">
+            <div class="flex justify-evenly font-medium text-black">
                 <ul class="mt-2">
                     <x-li :dato="$guarda->dni_num">{{"DNI: "}}</x-li>
                     <x-li :dato="$guarda->email">{{"Email: "}}</x-li>

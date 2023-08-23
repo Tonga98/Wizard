@@ -9,6 +9,6 @@
 
     <li>
         <a href="{{route($link.'.show',[$link=>$model->id])}}" class="hover:cursor-pointer hover:underline">
-            - Próximo vencimiento ({{ \Carbon\Carbon::parse($fecha)->format('d/m/Y') }}): {{$campo}}  {{$model->nombre." ". $model->apellido}} </a>
+            - Próximo vencimiento ({{ \Carbon\Carbon::parse($fecha)->format('d/m/Y') }}): {{$campo}} de {{$model instanceof \App\Models\Camioneta ? $model->patente : $model->nombre." ". $model->apellido}} </a>
     </li>
 @endforeach

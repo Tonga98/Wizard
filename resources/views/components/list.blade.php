@@ -1,7 +1,7 @@
 @props(['list', 'title', 'link'])
 <!--list se refiere a la lista la cual contiene todos los elementos de una tabla ej:(choferes, camionetas, ..etc)-->
-<aside class="w-3/12 border border-gray-500/50 shadow-2xl bg-slate-300/50 p-2">
-    <h2 class="text-xl mb-2 ml-1">{{$title}}</h2>
+<aside class="w-3/12 border border-gray-500/50 p-2 cardBlur">
+    <h2 class="text-2xl font-semibold text-black mb-3 ml-1">{{$title}}</h2>
 
     <!-- Agregar un formulario de búsqueda -->
     <form action="{{ route($link.'.search') }}" method="POST" class="pl-4 flex items-center">
@@ -14,7 +14,7 @@
     </form>
 
         @if(count($list) > 0)
-            <ul class="max-h-80 overflow-y-auto font-medium text-base px-4 pt-1">
+            <ul class="max-h-80 overflow-y-auto font-medium text-black font-medium px-4 pt-1">
                 <!--List se refiere a la lista de objetos del controlador que vino-->
                     @foreach($list as $element)
                         <!--$text para diferenciar si el list son camionetas al momento de listarlas no van a tener nombre y apellido-->
