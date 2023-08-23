@@ -202,8 +202,7 @@ class GuardaController extends Controller
 
         // Realizar la búsqueda en la base de datos
         $list = Guarda::where('nombre', 'LIKE', "%$busqueda%")
-            ->orWhere('ubicacion',  'LIKE', "%$busqueda%")
-            ->paginate(10);
+            ->orWhere('ubicacion',  'LIKE', "%$busqueda%");
 
         //Retorno la lista de los choferes
         return view('home',['list'=> $list, 'title'=>$title, 'link'=>$link]);

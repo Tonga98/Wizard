@@ -86,7 +86,7 @@ class ChoferController extends Controller
         $link ="chofer";
 
         //Recupero todos los usuarios
-        $choferes = Chofer::simplePaginate(10);
+        $choferes = Chofer::all();
 
         //Retorno vista home con lista de choferes
         return view('home',['list'=> $choferes, 'title'=>$title, 'link'=>$link]);
@@ -212,8 +212,7 @@ class ChoferController extends Controller
 
         // Realizar la búsqueda en la base de datos
         $list = Chofer::where('nombre', 'LIKE', "%$busqueda%")
-            ->orWhere('ubicacion', 'LIKE', "%$busqueda%")
-            ->paginate(10);
+            ->orWhere('ubicacion', 'LIKE', "%$busqueda%");
 
         //Retorno la lista de los choferes
         return view('home',['list'=> $list, 'title'=>$title, 'link'=>$link]);

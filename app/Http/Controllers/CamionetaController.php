@@ -49,7 +49,7 @@ class CamionetaController extends Controller
         $link = "camioneta";
 
         //Recupero todos las camionetas
-        $camionetas = Camioneta::paginate(10);
+        $camionetas = Camioneta::all();
 
         //Retorno vista home con lista de camionetas
         return view('home',['list'=> $camionetas, 'title'=>$title, 'link' =>$link]);
@@ -110,8 +110,7 @@ class CamionetaController extends Controller
 
         // Realizar la búsqueda en la base de datos
         $list = Camioneta::where('patente', 'LIKE', "%$busqueda%")
-            ->orWhere('ubicacion', 'LIKE', "%$busqueda%")
-            ->paginate(10);
+            ->orWhere('ubicacion', 'LIKE', "%$busqueda%");
 
         //Retorno la lista de los choferes
         return view('home',['list'=> $list, 'title'=>$title, 'link'=>$link]);

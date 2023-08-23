@@ -14,7 +14,7 @@
     </form>
 
         @if(count($list) > 0)
-            <ul class="font-medium text-base px-4 pt-1">
+            <ul class="max-h-80 overflow-y-auto font-medium text-base px-4 pt-1">
                 <!--List se refiere a la lista de objetos del controlador que vino-->
                     @foreach($list as $element)
                         <!--$text para diferenciar si el list son camionetas al momento de listarlas no van a tener nombre y apellido-->
@@ -27,7 +27,7 @@
             </ul>
                 @if(count($list) >= 10 || (isset($_GET['page']) && $_GET['page'] != 1))
                     <div class="mt-5">
-                        {{$list->links()}}
+                        {{--$list->links()--}}
                     </div>
                 @endif
         @else

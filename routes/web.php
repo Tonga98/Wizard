@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,8 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 //PAGINA HOME
-Route::get('/', function () {
-    return view('home');
-})->middleware('login')->name('home');
+Route::get('/', [HomeController::class, 'index'])->middleware('login')->name('home');
 
 require __DIR__.'/auth.php';

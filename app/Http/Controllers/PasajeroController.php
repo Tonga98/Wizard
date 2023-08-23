@@ -53,7 +53,7 @@ class PasajeroController extends Controller
         $link = "pasajero";
 
         //Recupero todos los pasajeros
-        $pasajeros = Pasajero::paginate(10);
+        $pasajeros = Pasajero::all();
 
         //Retorno vista home con lista de pasajeros
         return view('home',['list'=> $pasajeros, 'title'=>$title, 'link' => $link]);
@@ -122,8 +122,7 @@ class PasajeroController extends Controller
 
         // Realizar la búsqueda en la base de datos
         $list = Pasajero::where('nombre', 'LIKE', "%$busqueda%")
-            ->orWhere('ubicacion', 'LIKE', "%$busqueda%")
-            ->paginate(10);
+            ->orWhere('ubicacion', 'LIKE', "%$busqueda%");
 
         //Retorno la lista de los choferes
         return view('home',['list'=> $list, 'title'=>$title, 'link'=>$link]);
