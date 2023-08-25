@@ -27,11 +27,22 @@
                     </li>
                 </ul>
             </div>
+
             <div class="flex items-center gap-2 justify-end mt-4">
+
+                @if($hasFile)
+                {{--Button download files--}}
+                <a href="{{route('chofer.downloadFiles',['chofer'=>$chofer->id])}}"
+                   class="px-4 py-2 bg-green-800 rounded-md font-semibold text-xs text-white hover:bg-green-700">DESCARGAR
+                    ARCHIVOS</a>
+                @endif
+
+                {{--Button edit--}}
                 <a href="{{route('chofer.edit',['chofer'=>$chofer->id])}}"
                    class="px-4 py-2 bg-gray-800 rounded-md font-semibold text-xs text-white hover:bg-gray-700">EDITAR
                     CHOFER</a>
 
+                {{--Button delete--}}
                 <form action="{{ route('chofer.destroy', ['chofer' => $chofer->id]) }}" method="POST">
                     @csrf
                     @method('DELETE')

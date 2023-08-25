@@ -40,4 +40,5 @@ class Camioneta extends Model
         }
         return $campos;
     }
+
 }

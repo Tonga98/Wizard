@@ -12,6 +12,7 @@ use App\Http\Requests\NewGuardaRequest;
 use App\Http\Requests\UpdateGuardaRequest;
 use Storage;
 use App\Models\Camioneta;
+use ZipArchive;
 
 class GuardaController extends Controller
 {
@@ -94,7 +95,10 @@ class GuardaController extends Controller
         //Obtengo la camioneta en la cual anda la guarda
         $camioneta = $guarda->camioneta;
 
-        return view('detail.guarda', ['guarda'=>$guarda, 'camioneta' => $camioneta]);
+        //Verifico si tiene archivos cargados para mostrar o no el boton de descargar archivos
+        $hasFile = $guarda->hasFile();
+
+        return view('detail.guarda', ['guarda'=>$guarda, 'camioneta' => $camioneta, 'hasFile'=>$hasFile]);
     }
 
     public function edit(int $id): view{
@@ -206,5 +210,68 @@ class GuardaController extends Controller
 
         //Retorno la lista de los choferes
         return view('home',['list'=> $list, 'title'=>$title, 'link'=>$link]);
+    }
+
+    public function downloadFiles(int $id)
+    {
+        //Este metodo descarga todos los archivos cargados de la guarda con el id recibido
+
+        //Obtengo el guarda
+        $guarda = Guarda::find($id);
+
+        //Si no existe el guarda retorno
+        if (!$guarda) {
+            return abort(404, 'Guarda no encontrada');
+        }
+
+        //Campos de archivos que puede tener la guarda
+        $camposFiles = [
+            'dni_frente',
+            'dni_dorso',
+            'antecedentes_foto',
+        ];
+
+        //Declaro variable
+        $files = [];
+
+        //Guardo en el array files los archivos y sus rutas existentes
+        foreach ($camposFiles as $file) {
+            if ($guarda->$file != null) {
+                $files[] = [
+                    'name' => $file . "-" . $guarda->apellido . ".pdf",
+                    'path' => 'app/guardas/' . $guarda->$file
+                ];
+            }
+        }
+
+        //Si el guarda no tiene archivos a descargar
+        if (count($files) === 0) {
+            return abort(404, 'No hay archivos para descargar');
+        }
+
+        //Creo una instancia zip
+        $zip = new ZipArchive();
+        $zipName = $guarda->nombre . "-" . $guarda->apellido . ".zip";
+
+        //Creo el zip y le agrego los archivos cargados en $files
+        if ($zip->open($zipName, ZipArchive::CREATE)) {
+            foreach ($files as $file) {
+                $zip->addFile(storage_path($file['path']), $file['name']);
+            }
+            $zip->close();
+
+            //Indico al navegador que el contenido es un zip
+            header('Content-type: application/zip');
+
+            //Indico al navegador que el archivo debe descargarse como un archivo adjunto con el nombre $zipName
+            header('Content-Disposition: attachment; filename="' . $zipName . '"');
+
+            //Envio el zip al navegador asi lo interpreta como una descarga
+            readfile($zipName);
+
+            //Elimino el zip creado
+            unlink($zipName);
+        }
+        return response()->make('', 200);
     }
 }

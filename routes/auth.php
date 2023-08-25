@@ -46,6 +46,9 @@ Route::middleware('login')->group(function () {
     Route::post('pasajero/search', [CamionetaController::class, 'search'])->name("camioneta.search");
     Route::post('camioneta/search', [PasajeroController::class, 'search'])->name("pasajero.search");
 
+    //DOWNLOAD FILES
+    Route::get('/chofer/download/{chofer}', [ChoferController::class, 'downloadFiles'])->name('chofer.downloadFiles');
+    Route::get('/guarda/download/{guarda}', [GuardaController::class, 'downloadFiles'])->name('guarda.downloadFiles');
 
 
     Route::get('verify-email', EmailVerificationPromptController::class)

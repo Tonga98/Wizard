@@ -61,4 +61,16 @@ class Guarda extends Authenticatable
         }
         return $campos;
     }
+
+    public function hasFile(){
+        //Este metodo verifica si la guarda tiene algun archivo cargado
+
+        //Declaracion de variables
+        $hasFile = false;
+
+        if($this->dni_dorso || $this->dni_frente || $this->antecedentes_foto){
+            $hasFile = true;
+        }
+        return $hasFile;
+    }
 }

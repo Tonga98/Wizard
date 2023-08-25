@@ -67,6 +67,8 @@ class PasajeroController extends Controller
         //Obtengo la camioneta en la que viaja
         $camioneta = $pasajero->camioneta;
 
+
+
         return view('detail.pasajero', ['pasajero' => $pasajero, 'camioneta'=> $camioneta]);
     }
 

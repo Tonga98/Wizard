@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateChoferRequest;
 use App\Models\Chofer;
+use http\Env\Response;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
@@ -12,6 +13,8 @@ use App\Http\Requests\NewChoferRequest;
 use Storage;
 use Illuminate\Http\Request;
 use App\Models\Camioneta;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use ZipArchive;
 
 class ChoferController extends Controller
 {
@@ -30,26 +33,25 @@ class ChoferController extends Controller
 
         //Creo array con los nombres de los archivos a recorrer
         $filesFields = ["antecedentes_foto", 'lic_conducir_frente', 'lic_conducir_dorso', 'dni_frente', 'dni_dorso'];
-        $fileNames=[];
+        $fileNames = [];
 
-        foreach ($filesFields as $fileField){
+        foreach ($filesFields as $fileField) {
 
             //Si llego el campo con un archivo
-            if(!empty($validatedData[$fileField])){
+            if (!empty($validatedData[$fileField])) {
 
                 //Guardo el archivo en el storage
                 $file = $validatedData[$fileField];
-                $fileName = time().'-'.$file->getClientOriginalName();
+                $fileName = time() . '-' . $file->getClientOriginalName();
                 $file->storeAs('choferes', $fileName);
 
                 //Guardo los nombres de los campos input con el nombre del archivo guardado en el storage asociado
                 $fileNames[$fileField] = $fileName;
-            }else{
+            } else {
                 $validatedData[$fileField] = null;
             }
 
         }
-
 
 
         //Creo el nuevo chofer
@@ -77,22 +79,24 @@ class ChoferController extends Controller
         return redirect(route('home'));
     }
 
-    public function index() : View{
+    public function index(): View
+    {
         //Este modulo recupera los choferes de la db y los entrega a la vista
 
         //Declaracion de variables
         $choferes = [];
         $title = "Choferes";
-        $link ="chofer";
+        $link = "chofer";
 
         //Recupero todos los usuarios
         $choferes = Chofer::all();
 
         //Retorno vista home con lista de choferes
-        return view('home',['list'=> $choferes, 'title'=>$title, 'link'=>$link]);
+        return view('home', ['list' => $choferes, 'title' => $title, 'link' => $link]);
     }
 
-    public function show(int $id): view{
+    public function show(int $id): view
+    {
         //Este metodo retorna el chofer de la db con id = $id
 
         //Obtengo el chofer
@@ -101,11 +105,15 @@ class ChoferController extends Controller
         //Obtengo la camioneta que maneja
         $camioneta = $chofer->camioneta;
 
+        //Verifico si tiene archivos cargados para mostrar o no el boton de descargar archivos
+        $hasFile = $chofer->hasFile();
+
         //Retorno la vista con el chofer
-        return view('detail.chofer',['chofer' => $chofer, 'camioneta'=>$camioneta]);
+        return view('detail.chofer', ['chofer' => $chofer, 'camioneta' => $camioneta, 'hasFile' => $hasFile]);
     }
 
-    public function edit(int $id): view{
+    public function edit(int $id): view
+    {
         //Este metodo retorna la vista de editar chofer asociado al id recibido
 
         //Obtengo el chofer
@@ -115,35 +123,36 @@ class ChoferController extends Controller
         $camionetas = Camioneta::all();
 
         //Retorno la vista con el chofer
-        return view('create.chofer',['chofer'=>$chofer, 'edit'=>true,'camionetas'=>$camionetas]);
+        return view('create.chofer', ['chofer' => $chofer, 'edit' => true, 'camionetas' => $camionetas]);
     }
 
-    public function update(UpdateChoferRequest $request, Chofer $chofer): RedirectResponse{
+    public function update(UpdateChoferRequest $request, Chofer $chofer): RedirectResponse
+    {
 
         //Obtengo los campos validados correctamente
         $validatedData = $request->validated();
 
         //Verifico si se actualizo la password
-        if($validatedData['password'] !== null){
+        if ($validatedData['password'] !== null) {
             $validatedData['password'] = Hash::make($validatedData['password']);
-        }else{
+        } else {
             unset($validatedData['password']);
         }
 
         //Creo array con los nombres de los archivos a recorrer
         $filesFields = ["antecedentes_foto", 'lic_conducir_frente', 'lic_conducir_dorso', 'dni_frente', 'dni_dorso'];
 
-        foreach ($filesFields as $fileField){
+        foreach ($filesFields as $fileField) {
             //Si llego el campo con un archivo
-            if(!empty($validatedData[$fileField])){
+            if (!empty($validatedData[$fileField])) {
 
                 //Elimino el archivo que tenia antes
                 $oldFile = $chofer->$fileField;
-                Storage::delete('choferes/'.$oldFile);
+                Storage::delete('choferes/' . $oldFile);
 
                 //Guardo el nuevo archivo en el storage
                 $file = $validatedData[$fileField];
-                $fileName = time().'-'.$file->getClientOriginalName();
+                $fileName = time() . '-' . $file->getClientOriginalName();
                 $file->storeAs('choferes', $fileName);
                 $validatedData[$fileField] = $fileName;
             }
@@ -152,21 +161,22 @@ class ChoferController extends Controller
         //Cargo los atributos en el modelo
         $chofer->update($validatedData);
 
-        return redirect()->route('chofer.show',['chofer'=>$chofer->id]);
+        return redirect()->route('chofer.show', ['chofer' => $chofer->id]);
     }
 
-    public function destroy(int $id):RedirectResponse{
+    public function destroy(int $id): RedirectResponse
+    {
 
         //Obtengo el chofer
         $chofer = Chofer::find($id);
 
         //Obtengo los nombres de los archivos asociados al chofer
         $archivosAEliminar = [
-            $chofer->antecedentes_foto ,
+            $chofer->antecedentes_foto,
             $chofer->lic_conducir_frente,
             $chofer->lic_conducir_dorso,
-            $chofer->dni_frente ,
-            $chofer->dni_dorso ,
+            $chofer->dni_frente,
+            $chofer->dni_dorso,
         ];
 
         //Elimino el chofer
@@ -182,7 +192,8 @@ class ChoferController extends Controller
         return redirect(route('chofer.index'));
     }
 
-    public function eliminarArchivo(String $archivo, String $campo):RedirectResponse{
+    public function eliminarArchivo(string $archivo, string $campo): RedirectResponse
+    {
         //Este metodo elimina un archivo del storage con el nombre de $archivo
 
         //Obtengo el chofer
@@ -190,31 +201,97 @@ class ChoferController extends Controller
 
         if ($chofer) {
 
-          // Elimino el archivo del storage
-            Storage::delete('choferes/'.$archivo);
+            // Elimino el archivo del storage
+            Storage::delete('choferes/' . $archivo);
 
-          // Actualizo la base de datos
+            // Actualizo la base de datos
             $chofer->update([$campo => null]);
         }
 
         return back();
     }
 
-    public function search(Request $request) :View{
+    public function search(Request $request): View
+    {
         //Este metodo busca choferes
 
         //Valido la request
-        $request->validate(['search'=> "required|string|max:255"]);
+        $request->validate(['search' => "required|string|max:255"]);
 
         $busqueda = $request->input('search');
         $title = "Choferes";
-        $link ="chofer";
+        $link = "chofer";
 
         // Realizar la búsqueda en la base de datos
         $list = Chofer::where('nombre', 'LIKE', "%$busqueda%")
             ->orWhere('ubicacion', 'LIKE', "%$busqueda%");
 
         //Retorno la lista de los choferes
-        return view('home',['list'=> $list, 'title'=>$title, 'link'=>$link]);
+        return view('home', ['list' => $list, 'title' => $title, 'link' => $link]);
+    }
+
+    public function downloadFiles(int $id)
+    {
+        //Este metodo descarga todos los archivos cargados del chofer con el id recibido
+
+        //Obtengo el chofer
+        $chofer = Chofer::find($id);
+
+        //Si no existe el chofer retorno
+        if (!$chofer) {
+            return abort(404, 'Chofer no encontrado');
+        }
+
+        //Campos de archivos que puede tener el chofer
+        $camposFiles = [
+            'dni_frente',
+            'dni_dorso',
+            'antecedentes_foto',
+            'lic_conducir_frente',
+            'lic_conducir_dorso'
+        ];
+
+        //Declaro variable
+        $files = [];
+
+        //Guardo en el array files los archivos y sus rutas existentes
+        foreach ($camposFiles as $file) {
+            if ($chofer->$file != null) {
+                $files[] = [
+                    'name' => $file . "-" . $chofer->apellido . ".pdf",
+                    'path' => 'app/choferes/' . $chofer->$file
+                ];
+            }
+        }
+
+        //Si el chofer no tiene archivos a descargar
+        if (count($files) === 0) {
+            return abort(404, 'No hay archivos para descargar');
+        }
+
+        //Creo una instancia zip
+        $zip = new ZipArchive();
+        $zipName = $chofer->nombre . "-" . $chofer->apellido . ".zip";
+
+        //Creo el zip y le agrego los archivos cargados en $files
+        if ($zip->open($zipName, ZipArchive::CREATE)) {
+            foreach ($files as $file) {
+                $zip->addFile(storage_path($file['path']), $file['name']);
+            }
+            $zip->close();
+
+            //Indico al navegador que el contenido es un zip
+            header('Content-type: application/zip');
+
+            //Indico al navegador que el archivo debe descargarse como un archivo adjunto con el nombre $zipName
+            header('Content-Disposition: attachment; filename="' . $zipName . '"');
+
+            //Envio el zip al navegador asi lo interpreta como una descarga
+            readfile($zipName);
+
+            //Elimino el zip creado
+            unlink($zipName);
+        }
+        return response()->make('', 200);
     }
 }

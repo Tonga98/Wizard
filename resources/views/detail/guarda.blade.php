@@ -24,9 +24,20 @@
                 </ul>
             </div>
             <div class="flex items-center gap-2 justify-end mt-4">
+
+                {{--Button download files--}}
+                @if($hasFile)
+                    <a href="{{route('guarda.downloadFiles',['guarda'=>$guarda->id])}}"
+                       class="px-4 py-2 bg-green-800 rounded-md font-semibold text-xs text-white hover:bg-green-700">DESCARGAR
+                        ARCHIVOS</a>
+                @endif
+
+                {{--Button edit--}}
                 <a href="{{route('guarda.edit',['guarda'=>$guarda->id])}}"
                    class="px-4 py-2 bg-gray-800 rounded-md font-semibold text-xs text-white hover:bg-gray-700">EDITAR
                     GUARDA</a>
+
+                {{--Button delete--}}
                 <form action="{{ route('guarda.destroy', ['guarda' => $guarda->id]) }}" method="POST">
                     @csrf
                     @method('DELETE')
@@ -35,6 +46,7 @@
                         ELIMINAR GUARDA
                     </button>
                 </form>
+
             </div>
         </article>
     </div>

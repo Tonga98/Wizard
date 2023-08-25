@@ -76,6 +76,17 @@ class Chofer extends Authenticatable
         return $campos;
     }
 
+    public function hasFile(){
+        //Este metodo verifica si el chofer tiene algun archivo cargado
+
+        //Declaracion de variables
+        $hasFile = false;
+
+        if($this->dni_dorso || $this->dni_frente || $this->antecedentes_foto || $this->lic_conducir_frente || $this->lic_conducir_dorso){
+            $hasFile = true;
+        }
+        return $hasFile;
+    }
 }
 
 
