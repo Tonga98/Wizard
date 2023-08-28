@@ -8,6 +8,7 @@
             <li><a href="{{route('guarda.create')}}" class="hover:cursor-pointer hover:underline">Agregar Guarda</a></li>
             <li><a href="{{route('pasajero.create')}}" class="hover:cursor-pointer hover:underline">Agregar Pasajero</a></li>
             <li><a href="{{route('camioneta.create')}}" class="hover:cursor-pointer hover:underline">Agregar Camioneta</a></li>
+            <li><a href="{{route('home.downloadFiles')}}" class="hover:cursor-pointer hover:underline">Descargar archivos</a></li>
         </ul>
     </div>
 

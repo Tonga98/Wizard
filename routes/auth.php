@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChoferController;
 use App\Http\Controllers\GuardaController;
@@ -49,6 +50,8 @@ Route::middleware('login')->group(function () {
     //DOWNLOAD FILES
     Route::get('/chofer/download/{chofer}', [ChoferController::class, 'downloadFiles'])->name('chofer.downloadFiles');
     Route::get('/guarda/download/{guarda}', [GuardaController::class, 'downloadFiles'])->name('guarda.downloadFiles');
+    Route::get('/downloadFiles', [HomeController::class, 'downloadAllFiles'])->name('home.downloadFiles');
+
 
 
     Route::get('verify-email', EmailVerificationPromptController::class)

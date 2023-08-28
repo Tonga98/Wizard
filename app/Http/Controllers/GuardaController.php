@@ -13,9 +13,19 @@ use App\Http\Requests\UpdateGuardaRequest;
 use Storage;
 use App\Models\Camioneta;
 use ZipArchive;
+use App\Services\FileDownloadService;
 
 class GuardaController extends Controller
 {
+    //Atributos
+    protected FileDownloadService $fileDownloadService;
+
+    //Metodos
+    public function __construct(FileDownloadService $fileDownloadService)
+    {
+        $this->fileDownloadService = $fileDownloadService;
+    }
+
     public function create(): View
     {
         //Obtengo las camionetas para mostrarlas en el select
@@ -224,54 +234,20 @@ class GuardaController extends Controller
             return abort(404, 'Guarda no encontrada');
         }
 
-        //Campos de archivos que puede tener la guarda
-        $camposFiles = [
-            'dni_frente',
-            'dni_dorso',
-            'antecedentes_foto',
-        ];
+        //Obtengo los archivos y sus path que tenga cargados el chofer
+        $files = $this->fileDownloadService->getFieldsWithFiles($guarda);
 
-        //Declaro variable
-        $files = [];
-
-        //Guardo en el array files los archivos y sus rutas existentes
-        foreach ($camposFiles as $file) {
-            if ($guarda->$file != null) {
-                $files[] = [
-                    'name' => $file . "-" . $guarda->apellido . ".pdf",
-                    'path' => 'app/guardas/' . $guarda->$file
-                ];
-            }
-        }
-
-        //Si el guarda no tiene archivos a descargar
+        //Si la guarda no tiene archivos a descargar
         if (count($files) === 0) {
             return abort(404, 'No hay archivos para descargar');
         }
 
-        //Creo una instancia zip
-        $zip = new ZipArchive();
-        $zipName = $guarda->nombre . "-" . $guarda->apellido . ".zip";
+        //Llamo al método del servicio para crear el zip con los archivos de la guarda
+        $zipName = $this->fileDownloadService->downloadModelFiles($guarda, $files);
 
-        //Creo el zip y le agrego los archivos cargados en $files
-        if ($zip->open($zipName, ZipArchive::CREATE)) {
-            foreach ($files as $file) {
-                $zip->addFile(storage_path($file['path']), $file['name']);
-            }
-            $zip->close();
-
-            //Indico al navegador que el contenido es un zip
-            header('Content-type: application/zip');
-
-            //Indico al navegador que el archivo debe descargarse como un archivo adjunto con el nombre $zipName
-            header('Content-Disposition: attachment; filename="' . $zipName . '"');
-
-            //Envio el zip al navegador asi lo interpreta como una descarga
-            readfile($zipName);
-
-            //Elimino el zip creado
-            unlink($zipName);
-        }
-        return response()->make('', 200);
+        //Luego de descargar el zip lo elimino
+        return response()
+            ->download($zipName, null, ['Content-Type' => 'application/zip'])
+            ->deleteFileAfterSend();
     }
 }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateChoferRequest;
 use App\Models\Chofer;
-use http\Env\Response;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
@@ -13,11 +12,18 @@ use App\Http\Requests\NewChoferRequest;
 use Storage;
 use Illuminate\Http\Request;
 use App\Models\Camioneta;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use ZipArchive;
+use App\Services\FileDownloadService;
 
 class ChoferController extends Controller
 {
+    //Atributos
+    protected FileDownloadService $fileDownloadService;
+
+    //Metodos
+    public function __construct(FileDownloadService $fileDownloadService){
+        $this->fileDownloadService = $fileDownloadService;
+    }
+
     public function create(): View
     {
         //Obtengo las camionetas para mostrarlas en el select
@@ -230,9 +236,9 @@ class ChoferController extends Controller
         return view('home', ['list' => $list, 'title' => $title, 'link' => $link]);
     }
 
-    public function downloadFiles(int $id)
+    public function downloadFiles(int $id): \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
-        //Este metodo descarga todos los archivos cargados del chofer con el id recibido
+        //Este metodo descarga todos los archivos cargados del chofer con el id recibido en un rar
 
         //Obtengo el chofer
         $chofer = Chofer::find($id);
@@ -242,56 +248,20 @@ class ChoferController extends Controller
             return abort(404, 'Chofer no encontrado');
         }
 
-        //Campos de archivos que puede tener el chofer
-        $camposFiles = [
-            'dni_frente',
-            'dni_dorso',
-            'antecedentes_foto',
-            'lic_conducir_frente',
-            'lic_conducir_dorso'
-        ];
-
-        //Declaro variable
-        $files = [];
-
-        //Guardo en el array files los archivos y sus rutas existentes
-        foreach ($camposFiles as $file) {
-            if ($chofer->$file != null) {
-                $files[] = [
-                    'name' => $file . "-" . $chofer->apellido . ".pdf",
-                    'path' => 'app/choferes/' . $chofer->$file
-                ];
-            }
-        }
+        //Obtengo los archivos y sus path que tenga cargados el chofer
+        $files = $this->fileDownloadService->getFieldsWithFiles($chofer);
 
         //Si el chofer no tiene archivos a descargar
         if (count($files) === 0) {
             return abort(404, 'No hay archivos para descargar');
         }
 
-        //Creo una instancia zip
-        $zip = new ZipArchive();
-        $zipName = $chofer->nombre . "-" . $chofer->apellido . ".zip";
+        //Llamo al método del servicio para crear el zip con los archivos del chofer
+        $zipName = $this->fileDownloadService->downloadModelFiles($chofer, $files);
 
-        //Creo el zip y le agrego los archivos cargados en $files
-        if ($zip->open($zipName, ZipArchive::CREATE)) {
-            foreach ($files as $file) {
-                $zip->addFile(storage_path($file['path']), $file['name']);
-            }
-            $zip->close();
-
-            //Indico al navegador que el contenido es un zip
-            header('Content-type: application/zip');
-
-            //Indico al navegador que el archivo debe descargarse como un archivo adjunto con el nombre $zipName
-            header('Content-Disposition: attachment; filename="' . $zipName . '"');
-
-            //Envio el zip al navegador asi lo interpreta como una descarga
-            readfile($zipName);
-
-            //Elimino el zip creado
-            unlink($zipName);
-        }
-        return response()->make('', 200);
+        //Luego de descargar el zip lo elimino
+        return response()
+            ->download($zipName, null, ['Content-Type' => 'application/zip'])
+            ->deleteFileAfterSend();
     }
 }

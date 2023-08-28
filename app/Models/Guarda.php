@@ -62,7 +62,7 @@ class Guarda extends Authenticatable
         return $campos;
     }
 
-    public function hasFile(){
+    public function hasFile():bool{
         //Este metodo verifica si la guarda tiene algun archivo cargado
 
         //Declaracion de variables
@@ -72,5 +72,18 @@ class Guarda extends Authenticatable
             $hasFile = true;
         }
         return $hasFile;
+    }
+
+    public static function withFilesLoaded(): \Illuminate\Database\Eloquent\Collection
+    {
+        /** @var \Illuminate\Database\Eloquent\Collection $guardas */
+        //Este metodo retorna todas las guardas que tienen al menos 1 archivo cargado
+
+        $guardas = Guarda::whereNotNull('dni_dorso')
+            ->orWhereNotNull('dni_frente')
+            ->orWhereNotNull('antecedentes_foto')
+            ->get();
+
+        return $guardas;
     }
 }
