@@ -50,11 +50,12 @@
                     <!-- Camioneta -->
                     <div>
                         <x-input-label for="camioneta_id" :value="__('Camioneta')" />
-                        <select id="id_camioneta" name="id_camioneta" class="w-full">
+                        <select id="camioneta_id" name="camioneta_id" class="w-full">
                             @foreach($camionetas as $camioneta)
                                 <option value="{{ $camioneta->id }}">{{ $camioneta->patente }}</option>
                             @endforeach
-                        </select>                        <x-input-error :messages="$errors->get('camioneta_id ')" class="mt-2" />
+                        </select>
+                        <x-input-error :messages="$errors->get('camioneta_id ')" class="mt-2" />
                     </div>
 
                     <div class="flex items-center justify-end mt-4">

@@ -32,7 +32,7 @@ class UpdateChoferRequest extends FormRequest
             'email' => ['string', 'email', 'max:255', Rule::unique(Chofer::class)->ignore($this->chofer->id)],
             'ubicacion' => ['string', 'max:255'],
             'num_telefono' => ['integer', Rule::unique(Chofer::class)->ignore($this->chofer->id)],
-            'id_camioneta' => ['integer'],
+            'camioneta_id' => ['integer','required'],
             'antecedentes_foto' => [File::types(['pdf', 'jpg', 'jpeg', 'png'])->max(4*1024)],
             'antecedentes_venc' => ['date'],
             'lic_conducir_venc' => ['date'],

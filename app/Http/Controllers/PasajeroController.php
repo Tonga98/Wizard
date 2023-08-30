@@ -41,7 +41,7 @@ class PasajeroController extends Controller
 
         event(new Registered($user));
 
-        return redirect(route('home'));
+        return redirect()->route('pasajero.show',['pasajero'=>$user->id]);
     }
 
     public function index() : View{
@@ -112,7 +112,7 @@ class PasajeroController extends Controller
         return redirect(route('pasajero.index'));
     }
 
-    public function search(Request $request) :View{
+    public function search(Request $request) :RedirectResponse{
         //Este metodo busca pasajeros
 
         //Valido la request
@@ -121,12 +121,14 @@ class PasajeroController extends Controller
         $busqueda = $request->input('search');
         $title = "Pasajeros";
         $link ="pasajero";
+        $list =[];
 
         // Realizar la búsqueda en la base de datos
         $list = Pasajero::where('nombre', 'LIKE', "%$busqueda%")
-            ->orWhere('ubicacion', 'LIKE', "%$busqueda%");
+            ->orWhere('ubicacion', 'LIKE', "%$busqueda%")->get();
 
-        //Retorno la lista de los choferes
+        //Retorno la lista de los pasajeros
         return view('home',['list'=> $list, 'title'=>$title, 'link'=>$link]);
+        //return back()->with(['list'=> $list, 'title'=>$title, 'link'=>$link]);
     }
 }

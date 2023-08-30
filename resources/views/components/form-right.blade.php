@@ -18,13 +18,13 @@
 
     <!-- Camioneta -->
     <div>
-        <x-input-label for="id_camioneta " :value="__('Camioneta')" />
-        <select id="id_camioneta" name="id_camioneta" class="w-full">
+        <x-input-label for="camioneta_id" :value="__('Camioneta')" />
+        <select id="camioneta_id" name="camioneta_id" class="w-full">
             @foreach($camionetas as $camioneta)
                 <option value="{{ $camioneta->id }}">{{ $camioneta->patente }}</option>
             @endforeach
         </select>
-        <x-input-error :messages="$errors->get('id_camioneta ')" class="mt-2" />
+        <x-input-error :messages="$errors->get('camioneta_id')" class="mt-2" />
     </div>
 
     <!-- Password -->

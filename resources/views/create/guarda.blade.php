@@ -35,8 +35,6 @@
                         <x-text-input id="antecedentes_venc" class="w-full" type="date" name="antecedentes_venc" :value="$edit ? $guarda->antecedentes_venc : old('antecedentes_venc')" required autofocus autocomplete="antecedentes_venc" />
                         <x-input-error :messages="$errors->get('antecedentes_venc')" class="mt-2" />
                     </div>
-
-
                 </div>
 
                 <!---Right side-->

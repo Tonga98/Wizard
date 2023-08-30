@@ -78,7 +78,7 @@ class GuardaController extends Controller
 
         event(new Registered($user));
 
-        return redirect(route('home'));
+        return redirect()->route('guarda.show',['guarda'=>$user->id]);
     }
 
     public function index() : View{
@@ -216,7 +216,7 @@ class GuardaController extends Controller
 
         // Realizar la búsqueda en la base de datos
         $list = Guarda::where('nombre', 'LIKE', "%$busqueda%")
-            ->orWhere('ubicacion',  'LIKE', "%$busqueda%");
+            ->orWhere('ubicacion',  'LIKE', "%$busqueda%")->get();
 
         //Retorno la lista de los choferes
         return view('home',['list'=> $list, 'title'=>$title, 'link'=>$link]);

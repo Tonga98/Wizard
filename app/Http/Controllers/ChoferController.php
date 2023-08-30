@@ -74,15 +74,16 @@ class ChoferController extends Controller
             'dni_dorso' => $fileNames['dni_dorso'] ?? null,
             'nombre' => $validatedData['nombre'],
             'apellido' => $validatedData['apellido'],
-            'id_camioneta' => $validatedData['id_camioneta'],
+            'id_camioneta' => $validatedData['camioneta_id'],
             'dni_num' => $validatedData['dni_num'],
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
         ]);
 
+
         event(new Registered($user));
 
-        return redirect(route('home'));
+        return redirect()->route('chofer.show', ['chofer' => $user->id]);
     }
 
     public function index(): View
@@ -137,6 +138,10 @@ class ChoferController extends Controller
 
         //Obtengo los campos validados correctamente
         $validatedData = $request->validated();
+
+        //Cambio el indice de camioneta_id a id_camioneta porque en la base de datos lo hice al revez :/
+        $validatedData['id_camioneta'] = $validatedData['camioneta_id'];
+        unset($validatedData['camioneta_id']);
 
         //Verifico si se actualizo la password
         if ($validatedData['password'] !== null) {
@@ -230,7 +235,7 @@ class ChoferController extends Controller
 
         // Realizar la búsqueda en la base de datos
         $list = Chofer::where('nombre', 'LIKE', "%$busqueda%")
-            ->orWhere('ubicacion', 'LIKE', "%$busqueda%");
+            ->orWhere('ubicacion', 'LIKE', "%$busqueda%")->get();
 
         //Retorno la lista de los choferes
         return view('home', ['list' => $list, 'title' => $title, 'link' => $link]);

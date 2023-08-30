@@ -41,7 +41,7 @@ class NewChoferRequest extends FormRequest
             'linti_venc' => ['required', 'date'],
             'dni_frente' => [File::types(['pdf', 'jpg', 'jpeg', 'png'])->max(4*1024)],
             'dni_dorso' => [File::types(['pdf', 'jpg', 'jpeg', 'png'])->max(4*1024)],
-            'id_camioneta' => ['required'],
+            'camioneta_id' => ['required'],
             'password' => ['required', 'confirmed', Password::defaults()],
         ];
     }

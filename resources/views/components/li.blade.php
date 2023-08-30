@@ -1,6 +1,6 @@
 @props(['dato', 'date'=>false, 'file'=>false, 'campo','model'=>'chofer'])
 
-{{-- dato: Se refiere al dato obtenido del chofer que se debe mostrar--}}
+{{-- dato: Se refiere al dato obtenido del modelo que se debe mostrar--}}
 {{-- date: Se refiere a si el tipo de dato que se debe mostrar es una fecha, entonces vendra con true--}}
 {{-- file: Se refiere a si el tipo de dato que se debe mostrar es un file entonces vendra con true--}}
 {{-- model: Se refiere a si el modelo es chofer o guarda para luego ir a su corresponiente ruta,

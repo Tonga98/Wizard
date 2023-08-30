@@ -1,17 +1,21 @@
-@props(['list', 'title', 'link'])
+@props(['list', 'title', 'link', 'search'=>true])
 <!--list se refiere a la lista la cual contiene todos los elementos de una tabla ej:(choferes, camionetas, ..etc)-->
+<!--Title se refiere al titulo que debe mostrar (Choferes/Guardas...)-->
+<!--search es false cuando se listan los pasajeros de una camioneta en su detail-->
 <aside class="w-3/12 border border-gray-500/50 p-2 cardBlur">
     <h2 class="text-2xl font-semibold text-black mb-3 ml-1">{{$title}}</h2>
 
-    <!-- Agregar un formulario de búsqueda -->
-    <form action="{{ route($link.'.search') }}" method="POST" class="pl-4 flex items-center">
-        @csrf
+    @if($search)
+        <!-- Agregar un formulario de búsqueda -->
+        <form action="{{ route($link.'.search') }}" method="POST" class="pl-4 flex items-center">
+            @csrf
 
-        <input type="text" name="search" placeholder="Buscar por nombre o ubicación"
-               class="w-4/5 p-1 border rounded-md focus:outline-none" required>
+            <input type="text" name="search" placeholder="Buscar por nombre o ubicación"
+                   class="w-4/5 p-1 border rounded-md focus:outline-none" required>
 
-        <button type="submit"><img src="{{asset("img/search.svg")}}" class="w-7 ml-2" alt="Lupa" title="Buscar"></button>
-    </form>
+            <button type="submit"><img src="{{asset("img/search.svg")}}" class="w-7 ml-2" alt="Lupa" title="Buscar"></button>
+        </form>
+    @endif
 
         @if(count($list) > 0)
             <ul class="max-h-80 overflow-y-auto font-medium text-black font-medium px-4 pt-1">
@@ -25,11 +29,6 @@
                         </li>
                     @endforeach
             </ul>
-                @if(count($list) >= 10 || (isset($_GET['page']) && $_GET['page'] != 1))
-                    <div class="mt-5">
-                        {{--$list->links()--}}
-                    </div>
-                @endif
         @else
         <p class="font-medium text-base text-center p-4">Sin resultados!</p>
         @endif

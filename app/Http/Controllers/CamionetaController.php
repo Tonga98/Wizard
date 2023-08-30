@@ -37,7 +37,7 @@ class CamionetaController extends Controller
 
         event(new Registered($camioneta));
 
-        return redirect(route('home'));
+        return redirect()->route('camioneta.show',['camioneta'=>$camioneta->id]);
     }
 
     public function index() : View{
@@ -57,11 +57,19 @@ class CamionetaController extends Controller
 
     public function show(int $id): view{
 
-        //Obtengo el pasajero
+        //Obtengo la camioneta
         $camioneta = Camioneta::find($id);
 
+        //Obtengo el chofer
+        $chofer = $camioneta->chofer;
 
-        return view('detail.camioneta', ['camioneta'=> $camioneta]);
+        //Obtengo la guarda
+        $guarda = $camioneta->guarda;
+
+        //Obtengo los pasajeros
+        $pasajeros = $camioneta->pasajeros;
+
+        return view('detail.camioneta', ['camioneta'=> $camioneta, 'chofer'=>$chofer, 'guarda'=>$guarda, 'list'=>$pasajeros]);
     }
 
     public function edit(int $id):view{
@@ -72,7 +80,7 @@ class CamionetaController extends Controller
         return view('create.camioneta', ['camioneta'=>$camioneta, 'edit'=>true]);
     }
 
-    public function update(Request $request, Camioneta $camioneta)
+    public function update(Request $request, Camioneta $camioneta) : RedirectResponse
     {
         //Valido los datos
         $request->validate([
@@ -110,7 +118,7 @@ class CamionetaController extends Controller
 
         // Realizar la búsqueda en la base de datos
         $list = Camioneta::where('patente', 'LIKE', "%$busqueda%")
-            ->orWhere('ubicacion', 'LIKE', "%$busqueda%");
+            ->orWhere('ubicacion', 'LIKE', "%$busqueda%")->get();
 
         //Retorno la lista de los choferes
         return view('home',['list'=> $list, 'title'=>$title, 'link'=>$link]);
