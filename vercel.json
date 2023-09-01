@@ -8,7 +8,7 @@
         "dest": "/api/index.php"
     }],
     "env": {
-        "APP_KEY": "=base64V6MT5TfAFOr5DD9r6CAQ3Z7yhY7X57ECJWQ4DL+7IGo=",
+        "APP_KEY": "base64:V6MT5TfAFOr5DD9r6CAQ3Z7yhY7X57ECJWQ4DL+7IGo=",
         "APP_ENV": "production",
         "APP_DEBUG": "true",
         "APP_URL": "https://wizard-vla.vercel.app",
