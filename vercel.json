@@ -9,16 +9,10 @@
         { "src": "/api/index.php", "use": "vercel-php@0.6.0" },
         { "src": "/public/**", "use": "@vercel/static" }],
 
-    "routes": [
-        {
-            "src": "/(css|js)/(.*)",
-            "dest": "public/$1/$2"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/api/index.php"
-        }
-    ],
+    "routes": [{
+        "src": "/(.*)",
+        "dest": "public/$1/$2"
+    }],
     "env": {
         "APP_KEY": "base64:V6MT5TfAFOr5DD9r6CAQ3Z7yhY7X57ECJWQ4DL+7IGo=",
         "APP_ENV": "production",
