@@ -5,7 +5,10 @@
     },
     "routes": [{
         "src": "/(.*)",
-        "dest": "/public/index.php"
+        "dest": "/public/index.php",
+        "headers": {
+            "content-type": "text/html; charset=utf-8"
+        }
     }],
     "env": {
         "APP_KEY": "base64:V6MT5TfAFOr5DD9r6CAQ3Z7yhY7X57ECJWQ4DL+7IGo=",
