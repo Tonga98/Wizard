@@ -11,7 +11,7 @@
 
     "routes": [{
         "src": "/(.*)",
-        "dest": "/api/index.php"
+        "dest": "public/$1/$2"
     }],
     "env": {
         "APP_KEY": "base64:V6MT5TfAFOr5DD9r6CAQ3Z7yhY7X57ECJWQ4DL+7IGo=",
