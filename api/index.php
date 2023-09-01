@@ -1,3 +1,3 @@
 <?php
 // Forward Vercel requests to normal index.php
-require '/../public/index.php';
+require __DIR__ . '/../public/index.php';
