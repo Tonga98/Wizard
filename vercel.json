@@ -1,6 +1,5 @@
 {
     "version": 2,
-    "framework": "vite",
     "functions": {
         "api/index.php": { "runtime": "vercel-php@0.6.0" }
     },
@@ -9,9 +8,10 @@
         "dest": "/api/index.php"
     }],
     "env": {
+        "APP_KEY": "=base64V6MT5TfAFOr5DD9r6CAQ3Z7yhY7X57ECJWQ4DL+7IGo=",
         "APP_ENV": "production",
         "APP_DEBUG": "true",
-        "APP_URL": "https://yourproductionurl.com",
+        "APP_URL": "https://wizard-vla.vercel.app",
 
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
