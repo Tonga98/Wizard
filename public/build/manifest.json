@@ -1,0 +1,16 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-7e59291b.css",
+    "isEntry": true,
+    "src": "resources/css/app.css"
+  },
+  "resources/fonts/ModernAntiqua-Regular.ttf": {
+    "file": "assets/ModernAntiqua-Regular-55e54d0c.ttf",
+    "src": "resources/fonts/ModernAntiqua-Regular.ttf"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-0d91dc04.js",
+    "isEntry": true,
+    "src": "resources/js/app.js"
+  }
+}
