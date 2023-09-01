@@ -20,9 +20,10 @@
         }
     ],
     "env": {
+        "APP_NAME": "Wizard",
         "APP_KEY": "base64:V6MT5TfAFOr5DD9r6CAQ3Z7yhY7X57ECJWQ4DL+7IGo=",
         "APP_ENV": "production",
-        "APP_DEBUG": "true",
+        "APP_DEBUG": "false",
         "APP_URL": "https://wizard-vla.vercel.app",
 
         "APP_CONFIG_CACHE": "/tmp/config.php",
