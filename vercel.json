@@ -5,7 +5,6 @@
     },
     "routes": [{
         "src": "/(.*)",
-        "dest": "/api/index.php"
     }],
     "env": {
         "APP_KEY": "base64:V6MT5TfAFOr5DD9r6CAQ3Z7yhY7X57ECJWQ4DL+7IGo=",
